@@ -200,7 +200,3 @@
         
         assert self.typ == 3
         
-        
-        
-    
-        
