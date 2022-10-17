@@ -1,14 +1,16 @@
 ﻿class Unite :
 
-    def __init__(self,x,y,z,pv_mx,pc,shield,cost_m,cost_e):
+    def __init__(self,x,y,z,pv_mx,pc,shield,cost_m,cost_e,typ):
 
-        assert type(x) == int and type(y) == int and type(z) == int
+    	assert type(x) == int and type(y) == int and type(z) == int
         assert type(pv_mx) == int and pv_mx > 0
         assert type(pc) == int and pc >= 0
         assert type(shield) == int and shield >= 0
         assert type(cost_m) == int and cost_m > 0
         assert type(cost_e) == int and cost_e > 0
-
+        assert 1 <= typ <= 6
+        # Assignation des types : 1(organique) 2(mechanique) 3(batiment) 4(portuguais) 5(mecano) 6(medecin)
+        
         self.x = x
         self.y = y
         self.z = z
@@ -21,6 +23,19 @@
         self.cost_m = cost_m
         self.cost_e = cost_e
         self.xp = 0
+        self.typ = typ
+        if typ == 2:
+            self.tx = 5
+            self.ty = 3
+            self.tz = 3
+        elif typ == 3:
+            self.tx = 9
+            self.ty = 9
+            self.tz = 8
+        else:
+            self.tx = 1
+            self.ty = 1
+            self.tz = 2 
 
     def Get_x(self):
         return(self.x)
@@ -57,6 +72,9 @@
 
     def Get_xp(self):
         return(self.xp)
+    
+    def Get_typ(self):
+        return(self.typ)
 
     def deplacer(self,dx,dy,dz):
         self.x += dx
@@ -71,7 +89,7 @@
         #Préconditions : rien,
         #Postconditions : la méthode ne modifie pas les valeurs,
 
-        print("L'abscisse de l'unité est ", self.x)
+        print("L'abscisse de l'unité est ", self.x )
         print("L'ordonnée de l'unité est ", self.y )
         print("La hauteur de l'unité est ", self.z )
         print("Le nombre de points de vie maximum de l'unité est ", self.pv_mx )
@@ -83,6 +101,7 @@
         print("Le coût en métal de l'unité est ", self.cost_m )
         print("Le coût en énergie de l'unité est ", self.cost_e )
         print("Le nombre de points d'expérience de l'unité est ", self.xp )
+        print("Le type de l'unité est ", self.typ )
 
     def augmenter_po(self,po_gagnees):
 
@@ -149,7 +168,7 @@
         #Valeur de retour : rien,
         #Préconditions : rien,
         #Postconditions : le nombre de point de vie de l'unité est remis au maximum si il était différent de 0,
-
+        
         if self.pv == 0:
             self.pv = self.pv_mx
 
@@ -164,3 +183,24 @@
         assert type(xp_gagne) == int and xp_gagne > 0
 
         self.xp += xp_gagne
+        
+    def soigner(self,healer,pv_gagnes):
+        
+        #Description : vérifie que le type du soigneur correspond au type de l'unité soigné et appelles la fonction réparer,
+        #Paramètres : healer - Unite - Unite soignée, pv_gagnes - INT - entier supèrieur,
+        #Valeur de retour : rien,
+        #Préconditions : les types correspondent ,"pv_gagnes" est un entier positif, "healer" est une Unite,
+        #Postconditions : la méthode reparer est appliquée à "healer",
+        
+        assert self.typ + healer.typ == 7
+        
+        healer.reparer(pv_gagnes)
+        
+    def generer(self,troupe):
+        
+        assert self.typ == 3
+        
+        
+        
+    
+        
