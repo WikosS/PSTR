@@ -9,8 +9,9 @@ from PSTR_Unite import *
 class TestUnite(TestCase) :
 
     def setUp (self):
-        self.U = Unite(1,2,3,100,100,100,150,150)
-
+        self.U = Unite(1,2,3,100,100,100,150,150,2)
+        self.H = Unite(1,2,3,100,100,100,150,150,5)
+        
     def test_Get_x(self):
         self.assertEqual(self.U.Get_x(), self.U.x)
 
@@ -46,6 +47,9 @@ class TestUnite(TestCase) :
 
     def test_Get_xp(self):
         self.assertEqual(self.U.Get_xp(), self.U.xp)
+        
+    def test_Get_typ(self):
+        self.assertEqual(self.U.Get_typ(), self.U.typ)
 
     def test_deplacer(self):
         self.U.deplacer(3,2,1)
@@ -54,7 +58,7 @@ class TestUnite(TestCase) :
         self.assertEqual(self.U.Get_z(), 4)
 
     def test_afficher_statistiques (self):
-        self.assertEqual(self.U.afficher_statistiques(),"L'abscisse de l'unité est  4,L'ordonnée de l'unité est  4,La hauteur de l'unité est 4,Le nombre de points de vie maximum de l'unité est 100,Le nombre de points de vie actuel de l'unité est 100, Le nombre de points d'attaque de l'unité est 100,Le nombre de points d'armure de l'unité est 100, Le niveau de l'unité est 1,Le nombre de pièce d'or de l'unité est 0,Le coût en métal de l'unité est 150,Le coût en énergie de l'unité est 150,Le nombre de points d'expérience de l'unité est 0")
+        self.assertEqual(self.U.afficher_statistiques(),"L'abscisse de l'unité est  4,L'ordonnée de l'unité est  4,La hauteur de l'unité est 4,Le nombre de points de vie maximum de l'unité est 100,Le nombre de points de vie actuel de l'unité est 100, Le nombre de points d'attaque de l'unité est 100,Le nombre de points d'armure de l'unité est 100, Le niveau de l'unité est 1,Le nombre de pièce d'or de l'unité est 0,Le coût en métal de l'unité est 150,Le coût en énergie de l'unité est 150,Le nombre de points d'expérience de l'unité est 0,Le type de l'unité est 5")
 
     def test_augmenter_po(self):
         self.U.augmenter_po(100)
@@ -84,3 +88,11 @@ class TestUnite(TestCase) :
     def test_augmenter_xp(self):
         self.U.augmenter_xp(1000)
         self.assertEqual(self.U.Get_xp, 1000)
+        
+    def test_soigner(self):
+        self.U.subir_degats(75)
+        self.H.soigner(U,500)
+        self.assertEqual(self.U.Get_pv, 100)
+    
+    
+    
