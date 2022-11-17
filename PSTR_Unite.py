@@ -2,15 +2,15 @@
 
     def __init__(self,x,y,z,pv_mx,pc,shield,cost_m,cost_e,typ):
 
-    	assert type(x) == int and type(y) == int and type(z) == int
+        assert type(x) == int and type(y) == int and type(z) == int
         assert type(pv_mx) == int and pv_mx > 0
         assert type(pc) == int and pc >= 0
         assert type(shield) == int and shield >= 0
         assert type(cost_m) == int and cost_m > 0
         assert type(cost_e) == int and cost_e > 0
-        assert 1 <= typ <= 6
-        # Assignation des types : 1(organique) 2(mechanique) 3(batiment) 4(portuguais) 5(mecano) 6(medecin)
-        
+        assert 1 <= typ <= 4
+        # Assignation des types : 1(organique) 2(mechanique) 3(mecano) 4(medecin)
+
         self.x = x
         self.y = y
         self.z = z
@@ -35,7 +35,7 @@
         else:
             self.tx = 1
             self.ty = 1
-            self.tz = 2 
+            self.tz = 2
 
     def Get_x(self):
         return(self.x)
@@ -72,7 +72,7 @@
 
     def Get_xp(self):
         return(self.xp)
-    
+
     def Get_typ(self):
         return(self.typ)
 
@@ -168,7 +168,7 @@
         #Valeur de retour : rien,
         #Préconditions : rien,
         #Postconditions : le nombre de point de vie de l'unité est remis au maximum si il était différent de 0,
-        
+
         if self.pv == 0:
             self.pv = self.pv_mx
 
@@ -183,20 +183,43 @@
         assert type(xp_gagne) == int and xp_gagne > 0
 
         self.xp += xp_gagne
-        
+
     def soigner(self,healer,pv_gagnes):
-        
+
         #Description : vérifie que le type du soigneur correspond au type de l'unité soigné et appelles la fonction réparer,
         #Paramètres : healer - Unite - Unite soignée, pv_gagnes - INT - entier supèrieur,
         #Valeur de retour : rien,
         #Préconditions : les types correspondent ,"pv_gagnes" est un entier positif, "healer" est une Unite,
         #Postconditions : la méthode reparer est appliquée à "healer",
-        
+
         assert self.typ + healer.typ == 7
-        
+
         healer.reparer(pv_gagnes)
-        
-    def generer(self,troupe):
-        
-        assert self.typ == 3
-        
+
+
+#carte = Canvas(fen, bg = "black", width = height, height = height)
+#cart = PhotoImage(file = "Grass.png")
+#gras = carte.create_image(x, y, image= cart)
+
+#print (width)
+#print (height)
+#bouton_trp1 = Button(fen, bg= "yellow", text="Soldat corps à corps", width = width//33, height= height//80)
+#bouton_trp2 = Button(fen, bg= "yellow", text="Docteur", width = width//33, height= height//80)
+#bouton_trp3 = Button(fen, bg= "yellow", text="Soldat distance", width = width//33, height= height//80)
+#bouton_trp4 = Button(fen, bg= "yellow", text="Char", width = width//33, height= height//80)
+#bouton_trp5 = Button(fen, bg= "yellow", text="Mécanicien", width = width//33, height= height//80)
+#bouton_trp0 = Button(fen, bg= "yellow", text="Ressources", width = width//33, height= height//80)
+
+#bouton_ferme = Button(fen, text="X", width=5, height=1, command = ferme)
+#bouton_reduire = Button(fen, text="-", width=5, height=1, command = reduire)
+
+#bouton_trp0.pack(side = LEFT)
+#bouton_trp1.place(x = 0,y = 7*height//40, anchor = NW)
+#bouton_trp2.place(x = 0,y = 14*height//40, anchor = NW)
+#bouton_trp3.place(x = 0,y = 21*height//40, anchor = NW)
+#bouton_trp4.place(x = 0,y = 28*height//40, anchor = NW)
+#bouton_trp5.place(x = 0,y = 35*height//40, anchor = NW)
+#carte.place(x= (width-height)//2, y = 0, anchor = NW)
+#bouton_ferme.place(x = width - 45, y = 0, anchor= NW)
+#bouton_reduire.place(x = width - 90, y = 0, anchor= NW)
+
