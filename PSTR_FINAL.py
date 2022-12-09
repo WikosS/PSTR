@@ -232,14 +232,14 @@ for i in range (17):
 #ASSIGNATION DES TOUCHES
 fen.focus_set()
 
-fen.bind("z", lambda event, tx = "z" :  deplacement_haut(Joueur_Image_H,JEU))
-fen.bind("q", lambda event, tx = "q" :  deplacement_gauche(Joueur_Image_G,JEU))
-fen.bind("s", lambda event, tx = "s" :  deplacement_bas(Joueur_Image_B,JEU))
-fen.bind("d", lambda event, tx = "d" :  deplacement_droite(Joueur_Image_D,JEU))
-fen.bind("Z", lambda event, tx = "Z" :  deplacement_haut(Joueur_Image_H,JEU))
-fen.bind("Q", lambda event, tx = "Q" :  deplacement_gauche(Joueur_Image_G,JEU))
-fen.bind("S", lambda event, tx = "S" :  deplacement_bas(Joueur_Image_B,JEU))
-fen.bind("D", lambda event, tx = "D" :  deplacement_droite(Joueur_Image_D,JEU))
+fen.bind("z", lambda event, tx = "z" : deplacement_haut(Joueur_Image_H,JEU))
+fen.bind("q", lambda event, tx = "q" : deplacement_gauche(Joueur_Image_G,JEU))
+fen.bind("s", lambda event, tx = "s" : deplacement_bas(Joueur_Image_B,JEU))
+fen.bind("d", lambda event, tx = "d" : deplacement_droite(Joueur_Image_D,JEU))
+fen.bind("Z", lambda event, tx = "Z" : deplacement_haut(Joueur_Image_H,JEU))
+fen.bind("Q", lambda event, tx = "Q" : deplacement_gauche(Joueur_Image_G,JEU))
+fen.bind("S", lambda event, tx = "S" : deplacement_bas(Joueur_Image_B,JEU))
+fen.bind("D", lambda event, tx = "D" : deplacement_droite(Joueur_Image_D,JEU))
 
 
 
