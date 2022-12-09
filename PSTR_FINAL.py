@@ -82,17 +82,17 @@ def anim():
     x_matt_5 += 4
     x_matt_6 += 4
 
-    if x_matt > 900:
+    if x_matt > fen.winfo_width():
         x_matt = -10
-    if x_matt_2 > 900:
+    if x_matt_2 > fen.winfo_width():
         x_matt_2 = -10
-    if x_matt_3 > 900:
+    if x_matt_3 > fen.winfo_width():
         x_matt_3 = -10
-    if x_matt_4 > 900:
+    if x_matt_4 > fen.winfo_width():
         x_matt_4 = -10
-    if x_matt_5 > 900:
+    if x_matt_5 > fen.winfo_width():
         x_matt_5 = -10
-    if x_matt_6 > 900:
+    if x_matt_6 > fen.winfo_width():
         x_matt_6 = -10
 
 
