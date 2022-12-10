@@ -212,10 +212,38 @@ def ferme():
 def reduire():
     fen.state("iconic")
 
+def debut():
+    deb = Tk()
+    deb.title("DEBUT")
+    deb.attributes("-fullscreen", True)
+    deb.config(bg="black")
+
+    deb.update()
+    width = deb.winfo_width()
+    height = deb.winfo_width()
+
+    def Jouer():
+        deb.destroy()
+
+    def Stop():
+        deb.destroy()
+        fen.destroy()
+
+    TEXT = Label(deb, bg = "black", font = ("Comis Sans MS", "40"), text = "BIENVENUE DANS NOTRE JEUX VIDEO", fg = "white")
+    START = Button(deb, text = "JOUER", bg="blue", width = width//50, height = height //500, command=Jouer)
+    STOP = Button(deb, text = "FERMER", bg="red", width = width//50, height = height //500, command=Stop)
+
+    TEXT.place(x = width//2, y = height//5, anchor = 's')
+    START.place(x = width//2-width//7, y = height//3, anchor = 'nw')
+    STOP.place(x = width//2, y = height//3 , anchor = 'nw')
+
+    deb.mainloop()
+
 def fin():
     fin = Tk()
     fin.title("FIN")
     fin.attributes("-fullscreen", True)
+    fin.config(bg="black")
 
     FIN = Canvas(fin, bg = "black", width = width, height = height)
 
@@ -226,7 +254,6 @@ def fin():
     fin.mainloop()
 
 #IMAGES
-pixel_ref = PhotoImage(width=1,height=1)
 pixel_ref_button = PhotoImage(width=width//3,height=3*height//20)
 
 Sable = Image.open("Textures/Sable.png")
@@ -417,4 +444,5 @@ BT2.pack(side = LEFT)
 BT3.pack(side = LEFT)
 
 anim()
+debut()
 fen.mainloop()
