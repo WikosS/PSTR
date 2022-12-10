@@ -1,4 +1,3 @@
-from PSTR_Unite import*
 # Créé par Ethan, le 07/12/2022 en Python 3.7
 from PSTR_Unite import*
 from tkinter import*
