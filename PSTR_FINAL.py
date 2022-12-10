@@ -15,13 +15,12 @@ height = fen.winfo_height()
 
 def combat(x,y):
     coord = [x,y]
-    for e in mechant:
-        if coord == [e[1],e[2]]:
+    for e in Ennemis:
+        coord_ennemie = [e.x,e.y]
+        if coord == coord_ennemie:
             cb = Tk()
             cb.title("Combat")
             cb.attributes("-fullscreen", True)
-            if Joueur.pv or e[0].pv > 0:
-                cb.destroy()
 
 def deplacement(Joueur_Image,JEU):
     if Joueur_Image == Joueur_Image_H:
@@ -138,9 +137,6 @@ x = 0
 y = 15*(16*(height//20)//17)
 
 Joueur = Unite(x,y,0,100,50,50,42,42,1)
-Mechant = Unite(-100,-100,0,100,50,50,42,42,1)
-mechant = [[Mechant,width//31,15*(16*(height//20)//17)]]
-
 
 #IMAGES
 pixel_ref = PhotoImage(width=1,height=1)
@@ -255,7 +251,7 @@ Joueur_Image_B = JEU.create_image((-100,-100),image=Joueur_Tk_B, anchor='nw')
 Joueur_Image_H = JEU.create_image((-100,-100),image=Joueur_Tk_H, anchor='nw')
 
 #CREATION ENNEMIS
-Mechant1 = Unite(round(random.randint(1,31))*(width//31),round(random.randint(15,16))*(16*(height//20)//17),0,100,50,50,42,42,1)
+Mechant1 = Unite(round(random.randint(1,30))*(width//31),round(random.randint(15,16))*(16*(height//20)//17),0,100,50,50,42,42,1)
 
 Mechant2 = Unite(round(random.randint(29,30))*(width//31),round(random.randint(0,14))*(16*(height//20)//17),0,100,50,50,42,42,1)
 
