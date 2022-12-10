@@ -5,7 +5,7 @@ from PIL import Image, ImageTk
 import random
 
 fen = Tk()
-fen.title("Not a PSTR")
+fen.title("JEU")
 fen.attributes("-fullscreen", True)
 fen.config(bg="black")
 
@@ -13,14 +13,103 @@ fen.update()
 width = fen.winfo_width()
 height = fen.winfo_height()
 
+indice = 0
+x_matt = 0
+x_matt_2 = 150
+x_matt_3 = 300
+x_matt_4 = 450
+x_matt_5 = 600
+x_matt_6 = 750
+
+colision = []
+
+x = 0
+y = 15*(16*(height//20)//17)
+
+Joueur = Unite(x,y,0,100,50,50,42,42,1)
+
 def combat(x,y):
     coord = [x,y]
+    coord_boss = [Boss.x,Boss.y]
+    coord_boss_2 = [Boss.x + width//31,Boss.y]
+    coord_boss_3 = [Boss.x + 2*width//31,Boss.y]
+    coord_boss_4 = [Boss.x,Boss.y + (16*(height//20)//17)]
+    coord_boss_5 = [Boss.x + width//31,Boss.y + (16*(height//20)//17)]
+    coord_boss_6 = [Boss.x + 2*width//31,Boss.y + (16*(height//20)//17)]
+    coord_boss_7 = [Boss.x,Boss.y + 2*(16*(height//20)//17)]
+    coord_boss_8 = [Boss.x + width//31,Boss.y + 2*(16*(height//20)//17)]
+    coord_boss_9 = [Boss.x + 2*width//31,Boss.y + 2*(16*(height//20)//17)]
+
     for e in Ennemis:
         coord_ennemie = [e.x,e.y]
         if coord == coord_ennemie:
             cb = Tk()
             cb.title("Combat")
             cb.attributes("-fullscreen", True)
+            strt = random.randint(1,100)
+            if strt > 100//Joueur.lv:
+                while Joueur.pv > 0 and e.pv > 0:
+                    Joueur.subir_degats(e.pc)
+                    e.subir_degats(Joueur.pc)
+            else:
+                while Joueur.pv > 0 and e.pv > 0:
+                    e.subir_degats(Joueur.pc)
+                    Joueur.subir_degats(e.pc)
+            cb.destroy()
+            if Joueur.pv >= 0:
+                if e.typ == 2:
+                    JEU.coords(Mechant1_image,-100,-100)
+                elif e.typ == 3:
+                    JEU.coords(Mechant2_image,-100,-100)
+                elif e.typ == 4:
+                    JEU.coords(Mechant3_image,-100,-100)
+                elif e.typ == 5:
+                    JEU.coords(Mechant4_image,-100,-100)
+                elif e.typ == 6:
+                    JEU.coords(Mechant5_image,-100,-100)
+                elif e.typ == 7:
+                    JEU.coords(Mechant6_image,-100,-100)
+                elif e.typ == 8:
+                    JEU.coords(Mechant7_image,-100,-100)
+                elif e.typ == 9:
+                    JEU.coords(Mechant8_image,-100,-100)
+                elif e.typ == 10:
+                    JEU.coords(Mechant9_image,-100,-100)
+                elif e.typ == 11:
+                    JEU.coords(Mechant10_image,-100,-100)
+                elif e.typ == 12:
+                    JEU.coords(Mechant11_image,-100,-100)
+                elif e.typ == 14:
+                    JEU.coords(Mechant13_image,-100,-100)
+                elif e.typ == 15:
+                    JEU.coords(Mechant14_image,-100,-100)
+                elif e.typ == 16:
+                    JEU.coords(Mechant15_image,-100,-100)
+                elif e.typ == 17:
+                    JEU.coords(Mechant16_image,-100,-100)
+                elif e.typ == 18:
+                    JEU.coords(Mechant17_image,-100,-100)
+                elif e.typ == 19:
+                    JEU.coords(Mechant18_image,-100,-100)
+                elif e.typ == 20:
+                    JEU.coords(Mechant19_image,-100,-100)
+
+    if coord == coord_boss or coord == coord_boss_2 or coord == coord_boss_3 or coord == coord_boss_4 or coord == coord_boss_5 or coord == coord_boss_6 or coord == coord_boss_7 or coord == coord_boss_8 or coord == coord_boss_9:
+        cb = Tk()
+        cb.title("Combat")
+        cb.attributes("-fullscreen", True)
+        strt = random.randint(1,100)
+        if strt > 100//Joueur.lv:
+            while Joueur.pv > 0 and e.pv > 0:
+                Joueur.subir_degats(e.pc)
+                e.subir_degats(Joueur.pc)
+        else:
+            while Joueur.pv > 0 and e.pv > 0:
+                e.subir_degats(Joueur.pc)
+                Joueur.subir_degats(e.pc)
+        cb.destroy()
+        fin()
+
 
 def deplacement(Joueur_Image,JEU):
     if Joueur_Image == Joueur_Image_H:
@@ -76,24 +165,24 @@ def colision_test(next_x, next_y):
 
 def anim():
     global x_matt, x_matt_2, x_matt_3, x_matt_4, x_matt_5, x_matt_6, indice, Fichier
-    x_matt += 4
-    x_matt_2 += 4
-    x_matt_3 += 4
-    x_matt_4 += 4
-    x_matt_5 += 4
-    x_matt_6 += 4
+    x_matt += (width-505)//300
+    x_matt_2 += (width-505)//300
+    x_matt_3 += (width-505)//300
+    x_matt_4 += (width-505)//300
+    x_matt_5 += (width-505)//300
+    x_matt_6 += (width-505)//300
 
-    if x_matt > fen.winfo_width():
+    if x_matt > width-505:
         x_matt = -10
-    if x_matt_2 > fen.winfo_width():
+    elif x_matt_2 > width-505:
         x_matt_2 = -10
-    if x_matt_3 > fen.winfo_width():
+    elif x_matt_3 > width-505:
         x_matt_3 = -10
-    if x_matt_4 > fen.winfo_width():
+    elif x_matt_4 > width-505:
         x_matt_4 = -10
-    if x_matt_5 > fen.winfo_width():
+    elif x_matt_5 > width-505:
         x_matt_5 = -10
-    if x_matt_6 > fen.winfo_width():
+    elif x_matt_6 > width-505:
         x_matt_6 = -10
 
 
@@ -123,20 +212,18 @@ def ferme():
 def reduire():
     fen.state("iconic")
 
-indice = 0
-x_matt = 0
-x_matt_2 = 150
-x_matt_3 = 300
-x_matt_4 = 450
-x_matt_5 = 600
-x_matt_6 = 750
+def fin():
+    fin = Tk()
+    fin.title("FIN")
+    fin.attributes("-fullscreen", True)
 
-colision = []
+    FIN = Canvas(fin, bg = "black", width = width, height = height)
 
-x = 0
-y = 15*(16*(height//20)//17)
+    FIN.pack()
 
-Joueur = Unite(x,y,0,100,50,50,42,42,1)
+    ferme()
+
+    fin.mainloop()
 
 #IMAGES
 pixel_ref = PhotoImage(width=1,height=1)
@@ -145,19 +232,19 @@ pixel_ref_button = PhotoImage(width=width//3,height=3*height//20)
 Sable = Image.open("Textures/Sable.png")
 Herbe = Image.open("Textures/Herbe.png")
 Neige = Image.open("Textures/Neige.png")
-Boss = Image.open("Textures/Boss.png")
+Salle = Image.open("Textures/Salle.png")
 Mur = Image.open("Textures/Mur.png")
 
 Sable_resize = Sable.resize((width//31,(16*(height//20)//17)), resample = 3)
 Herbe_resize = Herbe.resize((width//31,(16*(height//20)//17)), resample = 3)
 Neige_resize = Neige.resize((width//31,(16*(height//20)//17)), resample = 3)
-Boss_resize = Boss.resize((width//31,(16*(height//20)//17)), resample = 3)
+Salle_resize = Salle.resize((width//31,(16*(height//20)//17)), resample = 3)
 Mur_resize = Mur.resize((width//31,(16*(height//20)//17)), resample = 3)
 
 Sable_Tk = ImageTk.PhotoImage(Sable_resize)
 Herbe_Tk = ImageTk.PhotoImage(Herbe_resize)
 Neige_Tk = ImageTk.PhotoImage(Neige_resize)
-Boss_Tk = ImageTk.PhotoImage(Boss_resize)
+Salle_Tk = ImageTk.PhotoImage(Salle_resize)
 Mur_Tk = ImageTk.PhotoImage(Mur_resize)
 
 Joueur_IMG_D = Image.open("Joueurs/Joueur_droite.png")
@@ -176,10 +263,13 @@ Joueur_Tk_B = ImageTk.PhotoImage(Joueur_resize_B)
 Joueur_Tk_H = ImageTk.PhotoImage(Joueur_resize_H)
 
 Mechant_IMG = Image.open("Joueurs/Mechant.png")
+Boss_IMG = Image.open("Joueurs/Boss.png")
 
 Mechant_resize = Mechant_IMG.resize((width//31,(16*(height//20)//17)), resample = 3)
+Boss_resize = Boss_IMG.resize((3*width//31,3*(16*(height//20)//17)), resample = 3)
 
 Mechant_Tk = ImageTk.PhotoImage(Mechant_resize)
+Boss_Tk = ImageTk.PhotoImage(Boss_resize)
 
 #FRAMES
 frame_haut = Frame(fen, bg = "white", width = width, height = height//20)
@@ -208,8 +298,6 @@ Fichier = []
 for i in range(1,9):
     Fichier.append(PhotoImage(file="Matts/matt" + str(i) + ".gif").subsample(13,13))
 
-indice, x_matt = 0, 0
-
 Matt = PUB.create_image(x_matt, 0, image=Fichier[indice], anchor='nw')
 Matt2 = PUB.create_image(x_matt_2, 0, image=Fichier[indice], anchor='nw')
 Matt3 = PUB.create_image(x_matt_3, 0, image=Fichier[indice], anchor='nw')
@@ -235,7 +323,7 @@ for i in range (len(data)):
             JEU.create_image(coord_x, coord_y, image= Mur_Tk, anchor='nw')
             colision.append([coord_x,coord_y])
         elif e == "F":
-            JEU.create_image(coord_x, coord_y, image= Boss_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image= Salle_Tk, anchor='nw')
         elif e == "S":
             JEU.create_image(coord_x, coord_y, image= Sable_Tk, anchor='nw')
         elif e == "H":
@@ -251,31 +339,49 @@ Joueur_Image_B = JEU.create_image((-100,-100),image=Joueur_Tk_B, anchor='nw')
 Joueur_Image_H = JEU.create_image((-100,-100),image=Joueur_Tk_H, anchor='nw')
 
 #CREATION ENNEMIS
-Mechant1 = Unite(round(random.randint(1,30))*(width//31),round(random.randint(15,16))*(16*(height//20)//17),0,100,50,50,42,42,1)
-
-Mechant2 = Unite(round(random.randint(29,30))*(width//31),round(random.randint(0,14))*(16*(height//20)//17),0,100,50,50,42,42,1)
-
-Mechant3 = Unite(round(random.randint(0,28))*(width//31),round(random.randint(0,1))*(16*(height//20)//17),0,100,50,50,42,42,1)
-Mechant4 = Unite(round(random.randint(0,28))*(width//31),round(random.randint(0,1))*(16*(height//20)//17),0,100,50,50,42,42,1)
-
-Mechant5 = Unite(round(random.randint(0,1))*(width//31),round(random.randint(2,13))*(16*(height//20)//17),0,100,50,50,42,42,1)
-
-Mechant6 = Unite(round(random.randint(2,26))*(width//31),round(random.randint(12,13))*(16*(height//20)//17),0,100,50,50,42,42,1)
-Mechant7 = Unite(round(random.randint(2,26))*(width//31),round(random.randint(12,13))*(16*(height//20)//17),0,100,50,50,42,42,1)
-
-Mechant8 = Unite(round(random.randint(25,26))*(width//31),round(random.randint(3,11))*(16*(height//20)//17),0,100,50,50,42,42,1)
-
-Mechant9 = Unite(round(random.randint(3,24))*(width//31),round(random.randint(3,4))*(16*(height//20)//17),0,100,50,50,42,42,1)
-Mechant10 = Unite(round(random.randint(3,24))*(width//31),round(random.randint(3,4))*(16*(height//20)//17),0,100,50,50,42,42,1)
-
-Mechant11 = Unite(round(random.randint(3,4))*(width//31),round(random.randint(5,10))*(16*(height//20)//17),0,100,50,50,42,42,1)
+Mechant1 = Unite(round(random.randint(1,30))*(width//31),round(random.randint(15,16))*(16*(height//20)//17),0,1,5,0,42,42,2)
+Mechant2 = Unite(round(random.randint(29,30))*(width//31),round(random.randint(0,14))*(16*(height//20)//17),0,100,50,50,42,42,3)
+Mechant3 = Unite(round(random.randint(0,28))*(width//31),round(random.randint(0,1))*(16*(height//20)//17),0,100,50,50,42,42,4)
+Mechant4 = Unite(round(random.randint(0,28))*(width//31),round(random.randint(0,1))*(16*(height//20)//17),0,100,50,50,42,42,5)
+Mechant5 = Unite(round(random.randint(0,1))*(width//31),round(random.randint(2,13))*(16*(height//20)//17),0,100,50,50,42,42,6)
+Mechant6 = Unite(round(random.randint(2,26))*(width//31),round(random.randint(12,13))*(16*(height//20)//17),0,100,50,50,42,42,7)
+Mechant7 = Unite(round(random.randint(2,26))*(width//31),round(random.randint(12,13))*(16*(height//20)//17),0,100,50,50,42,42,8)
+Mechant8 = Unite(round(random.randint(26,27))*(width//31),round(random.randint(3,11))*(16*(height//20)//17),0,100,50,50,42,42,9)
+Mechant9 = Unite(round(random.randint(3,24))*(width//31),round(random.randint(3,4))*(16*(height//20)//17),0,100,50,50,42,42,10)
+Mechant10 = Unite(round(random.randint(3,24))*(width//31),round(random.randint(3,4))*(16*(height//20)//17),0,100,50,50,42,42,11)
+Mechant11 = Unite(round(random.randint(3,4))*(width//31),round(random.randint(5,10))*(16*(height//20)//17),0,100,50,50,42,42,12)
+Mechant13 = Unite(8*(width//31),round(random.randint(6,10))*(16*(height//20)//17),0,100,50,50,42,42,14)
+Mechant14 = Unite(10*(width//31),round(random.randint(6,10))*(16*(height//20)//17),0,100,50,50,42,42,15)
+Mechant15 = Unite(12*(width//31),round(random.randint(6,10))*(16*(height//20)//17),0,100,50,50,42,42,16)
+Mechant16 = Unite(14*(width//31),round(random.randint(6,10))*(16*(height//20)//17),0,100,50,50,42,42,17)
+Mechant17 = Unite(16*(width//31),round(random.randint(6,10))*(16*(height//20)//17),0,100,50,50,42,42,18)
+Mechant18 = Unite(18*(width//31),round(random.randint(6,10))*(16*(height//20)//17),0,100,50,50,42,42,19)
+Mechant19 = Unite(20*(width//31),round(random.randint(6,10))*(16*(height//20)//17),0,100,50,50,42,42,20)
+Boss = Unite(22*(width//31),7*(16*(height//20)//17),0,100,50,50,42,42,21)
 
 #CREATION IMAGES ENNEMIS
-Ennemis = [Mechant1,Mechant2,Mechant3,Mechant4,Mechant5,Mechant6,Mechant7,Mechant8,Mechant9,Mechant10,Mechant11]
+Ennemis = [Mechant1,Mechant2,Mechant3,Mechant4,Mechant5,Mechant6,Mechant7,Mechant8,Mechant9,Mechant10,Mechant11,Mechant13,Mechant14,Mechant15,Mechant16,Mechant17,Mechant18,Mechant19]
 
-for e in Ennemis:
-    Mechant_nom = str(e)+"_image"
-    Mechant_nom = JEU.create_image((e.x, e.y), image=Mechant_Tk, anchor='nw')
+Mechant1_image = JEU.create_image(Mechant1.x, Mechant1.y, image=Mechant_Tk, anchor='nw')
+Mechant2_image = JEU.create_image(Mechant2.x, Mechant2.y, image=Mechant_Tk, anchor='nw')
+Mechant3_image = JEU.create_image(Mechant3.x, Mechant3.y, image=Mechant_Tk, anchor='nw')
+Mechant4_image = JEU.create_image(Mechant4.x, Mechant4.y, image=Mechant_Tk, anchor='nw')
+Mechant5_image = JEU.create_image(Mechant5.x, Mechant5.y, image=Mechant_Tk, anchor='nw')
+Mechant6_image = JEU.create_image(Mechant6.x, Mechant6.y, image=Mechant_Tk, anchor='nw')
+Mechant7_image = JEU.create_image(Mechant7.x, Mechant7.y, image=Mechant_Tk, anchor='nw')
+Mechant8_image = JEU.create_image(Mechant8.x, Mechant8.y, image=Mechant_Tk, anchor='nw')
+Mechant9_image = JEU.create_image(Mechant9.x, Mechant9.y, image=Mechant_Tk, anchor='nw')
+Mechant10_image = JEU.create_image(Mechant10.x, Mechant10.y, image=Mechant_Tk, anchor='nw')
+Mechant11_image = JEU.create_image(Mechant11.x, Mechant11.y, image=Mechant_Tk, anchor='nw')
+Mechant13_image = JEU.create_image(Mechant13.x, Mechant13.y, image=Mechant_Tk, anchor='nw')
+Mechant14_image = JEU.create_image(Mechant14.x, Mechant14.y, image=Mechant_Tk, anchor='nw')
+Mechant15_image = JEU.create_image(Mechant15.x, Mechant15.y, image=Mechant_Tk, anchor='nw')
+Mechant16_image = JEU.create_image(Mechant16.x, Mechant16.y, image=Mechant_Tk, anchor='nw')
+Mechant17_image = JEU.create_image(Mechant17.x, Mechant17.y, image=Mechant_Tk, anchor='nw')
+Mechant18_image = JEU.create_image(Mechant18.x, Mechant18.y, image=Mechant_Tk, anchor='nw')
+Mechant19_image = JEU.create_image(Mechant19.x, Mechant19.y, image=Mechant_Tk, anchor='nw')
+
+Boss_image = JEU.create_image(Boss.x,Boss.y, image=Boss_Tk, anchor='nw')
 
 #ASSIGNATION DES TOUCHES
 fen.focus_set()
@@ -311,5 +417,4 @@ BT2.pack(side = LEFT)
 BT3.pack(side = LEFT)
 
 anim()
-
 fen.mainloop()

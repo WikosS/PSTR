@@ -8,7 +8,7 @@
         assert type(shield) == int and shield >= 0
         assert type(cost_m) == int and cost_m > 0
         assert type(cost_e) == int and cost_e > 0
-        assert 1 <= typ <= 4
+        assert 1 <= typ <= 21
         # Assignation des types : 1(organique) 2(mechanique) 3(mecano) 4(medecin)
 
         self.x = x
@@ -24,19 +24,6 @@
         self.cost_e = cost_e
         self.xp = 0
         self.typ = typ
-        if typ == 2:
-            self.tx = 5
-            self.ty = 3
-            self.tz = 3
-        elif typ == 3:
-            self.tx = 9
-            self.ty = 9
-            self.tz = 8
-        else:
-            self.tx = 1
-            self.ty = 1
-            self.tz = 2
-
         self.damage_bonus = 0
         self.health_bonus = 0
         self.armor_bonus = 0
@@ -170,7 +157,7 @@
 
         assert type(degats) == int and degats >= 0
 
-        degats_subits = round(degats - (degats*(self.shield+(self.armor_bonus*self.armor_multiplier)(self.shield + 100 + (self.armor_bonus*self.armor_multiplier)))))
+        degats_subits = round(degats - (degats*(self.shield/(self.shield + 100))))
         if self.pv - degats_subits <= 0:
             self.pv = 0
         else:
@@ -237,8 +224,6 @@
         #Préconditions : les types correspondent ,"pv_gagnes" est un entier positif, "healer" est une Unite,
         #Postconditions : la méthode reparer est appliquée à "healer",
 
-        assert self.typ + healer.typ == 7
-
         healer.reparer(pv_gagnes)
 
     def verif_achetable(self,prix): #vérifie si le joueur a plus d'argent que le prix / retourne True si oui False si non
@@ -271,6 +256,4 @@
         if self.verif_achetable(150 + 200**self.armor_multiplier):
             self.gold -= round(150 + 200**self.armor_multiplier)
             self.armor_multiplier += 1.25
-
-
 
