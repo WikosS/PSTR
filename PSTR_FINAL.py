@@ -26,7 +26,7 @@ colision = []
 x = 0
 y = 15*(16*(height//20)//17)
 
-Joueur = Unite(x,y,0,100,50,50,42,42,1)
+Joueur = Unite(x, y, 0, 100, 50, 50, 42, 42, 1)
 
 def combat(x,y):
     coord = [x,y]
@@ -93,6 +93,7 @@ def combat(x,y):
                     JEU.coords(Mechant18_image,-100,-100)
                 elif e.typ == 20:
                     JEU.coords(Mechant19_image,-100,-100)
+    recalc_stats_label()
 
     if coord == coord_boss or coord == coord_boss_2 or coord == coord_boss_3 or coord == coord_boss_4 or coord == coord_boss_5 or coord == coord_boss_6 or coord == coord_boss_7 or coord == coord_boss_8 or coord == coord_boss_9:
         cb = Tk()
@@ -110,6 +111,13 @@ def combat(x,y):
         cb.destroy()
         fin()
 
+def recalc_stats_label():
+    global Stats_Label
+    global BT1_Label, BT2_Label, BT3_Label
+    Stats_Label.config(text="PV : "+str(Joueur.Get_pv())+"/"+str(Joueur.Get_true_max_health())+"    DMG : "+str(Joueur.Get_true_damage())+"    Shield : "+str(Joueur.Get_shield())+"    Gold : "+ str(Joueur.Get_gold()))
+    BT1_Label.config(text = "Upgrade DMG    Cost : "+str(Joueur.Get_bonus_damage_cost())+" Gold")
+    BT2_Label.config(text = "Upgrade Max Health   Cost : "+str(Joueur.Get_bonus_Health_cost())+" Gold")
+    BT3_Label.config(text = "Upgrade Shield   Cost : "+str(Joueur.Get_bonus_armor_cost())+" Gold")
 
 def deplacement(Joueur_Image,JEU):
     if Joueur_Image == Joueur_Image_H:
@@ -145,20 +153,19 @@ def deplacement(Joueur_Image,JEU):
             JEU.coords(Joueur_Image_B,-100,-100)
             combat(Joueur.x, Joueur.y)
 
+
 def acheter_damage_bonus():
     Joueur.acheter_damage_bonus()
+    recalc_stats_label()
 
-def acheter_helth_bonus():
+def acheter_health_bonus():
     Joueur.acheter_health_bonus()
+    recalc_stats_label()
 
 def acheter_armor_bonus():
     Joueur.acheter_armor_bonus()
+    recalc_stats_label()
 
-def acheter_damage_multiplier():
-    Joueur.acheter_damage_multiplier()
-
-def acheter_armor_multiplier():
-    Joueur.acheter_armor_multiplier()
 
 def colision_test(next_x, next_y):
     return [next_x, next_y] in colision or next_x >= 30*width//31 or next_y >= 17*(16*(height//20)//17) or next_x < 0 or next_y < 0
@@ -254,7 +261,13 @@ def fin():
     fin.mainloop()
 
 #IMAGES
-pixel_ref_button = PhotoImage(width=width//3,height=3*height//20)
+pixel_ref_button = PhotoImage(width=width//3, height=3*height//20,file="Textures/Buttons.png")
+stats_label_img = Image.open("Textures/Buttons.png")
+stats_label_img_resize = stats_label_img.resize((450, 23), resample=3)
+stats_label_img = ImageTk.PhotoImage(stats_label_img_resize)
+button_img = Image.open("Textures/Buttons.png")
+button_img_resize = button_img.resize((width//3, 3*height//20), resample=3)
+button_img = ImageTk.PhotoImage(button_img_resize)
 
 Mur = Image.open("Textures/%.png")
 A = Image.open("Textures/A.png")
@@ -289,38 +302,38 @@ CD = Image.open("Textures/CD.png")
 EF = Image.open("Textures/EF.png")
 GH = Image.open("Textures/GH.png")
 
-Mur_resize = Mur.resize((width//31,(16*(height//20)//17)), resample = 3)
-A_resize = A.resize((width//31,(16*(height//20)//17)), resample = 3)
-B_resize = B.resize((width//31,(16*(height//20)//17)), resample = 3)
-C_resize = C.resize((width//31,(16*(height//20)//17)), resample = 3)
-D_resize = D.resize((width//31,(16*(height//20)//17)), resample = 3)
-E_resize = E.resize((width//31,(16*(height//20)//17)), resample = 3)
-F_resize = F.resize((width//31,(16*(height//20)//17)), resample = 3)
-G_resize = G.resize((width//31,(16*(height//20)//17)), resample = 3)
-H_resize = H.resize((width//31,(16*(height//20)//17)), resample = 3)
-I_resize = I.resize((width//31,(16*(height//20)//17)), resample = 3)
-J_resize = J.resize((width//31,(16*(height//20)//17)), resample = 3)
-K_resize = K.resize((width//31,(16*(height//20)//17)), resample = 3)
-L_resize = L.resize((width//31,(16*(height//20)//17)), resample = 3)
-M_resize = M.resize((width//31,(16*(height//20)//17)), resample = 3)
-N_resize = N.resize((width//31,(16*(height//20)//17)), resample = 3)
-O_resize = O.resize((width//31,(16*(height//20)//17)), resample = 3)
-P_resize = P.resize((width//31,(16*(height//20)//17)), resample = 3)
-Q_resize = Q.resize((width//31,(16*(height//20)//17)), resample = 3)
-R_resize = R.resize((width//31,(16*(height//20)//17)), resample = 3)
-S_resize = S.resize((width//31,(16*(height//20)//17)), resample = 3)
-T_resize = T.resize((width//31,(16*(height//20)//17)), resample = 3)
-U_resize = U.resize((width//31,(16*(height//20)//17)), resample = 3)
-V_resize = V.resize((width//31,(16*(height//20)//17)), resample = 3)
-W_resize = W.resize((width//31,(16*(height//20)//17)), resample = 3)
-X_resize = X.resize((width//31,(16*(height//20)//17)), resample = 3)
-Y_resize = Y.resize((width//31,(16*(height//20)//17)), resample = 3)
-Z_resize = Z.resize((width//31,(16*(height//20)//17)), resample = 3)
-ZZ_resize = ZZ.resize((width//31,(16*(height//20)//17)), resample = 3)
-AB_resize = AB.resize((width//31,(16*(height//20)//17)), resample = 3)
-CD_resize = CD.resize((width//31,(16*(height//20)//17)), resample = 3)
-EF_resize = EF.resize((width//31,(16*(height//20)//17)), resample = 3)
-GH_resize = GH.resize((width//31,(16*(height//20)//17)), resample = 3)
+Mur_resize = Mur.resize((width//31, (16*(height//20)//17)), resample=3)
+A_resize = A.resize((width//31, (16*(height//20)//17)), resample=3)
+B_resize = B.resize((width//31, (16*(height//20)//17)), resample=3)
+C_resize = C.resize((width//31, (16*(height//20)//17)), resample=3)
+D_resize = D.resize((width//31, (16*(height//20)//17)), resample=3)
+E_resize = E.resize((width//31, (16*(height//20)//17)), resample=3)
+F_resize = F.resize((width//31, (16*(height//20)//17)), resample=3)
+G_resize = G.resize((width//31, (16*(height//20)//17)), resample=3)
+H_resize = H.resize((width//31, (16*(height//20)//17)), resample=3)
+I_resize = I.resize((width//31, (16*(height//20)//17)), resample=3)
+J_resize = J.resize((width//31, (16*(height//20)//17)), resample=3)
+K_resize = K.resize((width//31, (16*(height//20)//17)), resample=3)
+L_resize = L.resize((width//31, (16*(height//20)//17)), resample=3)
+M_resize = M.resize((width//31, (16*(height//20)//17)), resample=3)
+N_resize = N.resize((width//31, (16*(height//20)//17)), resample=3)
+O_resize = O.resize((width//31, (16*(height//20)//17)), resample=3)
+P_resize = P.resize((width//31, (16*(height//20)//17)), resample=3)
+Q_resize = Q.resize((width//31, (16*(height//20)//17)), resample=3)
+R_resize = R.resize((width//31, (16*(height//20)//17)), resample=3)
+S_resize = S.resize((width//31, (16*(height//20)//17)), resample=3)
+T_resize = T.resize((width//31, (16*(height//20)//17)), resample=3)
+U_resize = U.resize((width//31, (16*(height//20)//17)), resample=3)
+V_resize = V.resize((width//31, (16*(height//20)//17)), resample=3)
+W_resize = W.resize((width//31, (16*(height//20)//17)), resample=3)
+X_resize = X.resize((width//31, (16*(height//20)//17)), resample=3)
+Y_resize = Y.resize((width//31, (16*(height//20)//17)), resample=3)
+Z_resize = Z.resize((width//31, (16*(height//20)//17)), resample=3)
+ZZ_resize = ZZ.resize((width//31, (16*(height//20)//17)), resample=3)
+AB_resize = AB.resize((width//31, (16*(height//20)//17)), resample=3)
+CD_resize = CD.resize((width//31, (16*(height//20)//17)), resample=3)
+EF_resize = EF.resize((width//31, (16*(height//20)//17)), resample=3)
+GH_resize = GH.resize((width//31, (16*(height//20)//17)), resample=3)
 
 Mur_Tk = ImageTk.PhotoImage(Mur_resize)
 A_Tk = ImageTk.PhotoImage(A_resize)
@@ -397,9 +410,9 @@ JEU = Canvas(frame_millieu, width = width, height = (16*height//20), bg = "black
 COMBAT = Canvas(frame_millieu, width = width, height = (16*height//20), bg = "Black")
 
 #BOUTONS BAS
-BT1 = Button(frame_bas, bg="black", image=pixel_ref_button, command=acheter_damage_bonus)
-BT2 = Button(frame_bas, bg="white", image=pixel_ref_button, command=acheter_helth_bonus)
-BT3 = Button(frame_bas, bg="black", image=pixel_ref_button, command=acheter_armor_bonus)
+BT1 = Button(frame_bas, bg="black", image=button_img, command=acheter_damage_bonus)
+BT2 = Button(frame_bas, bg="white", image=button_img, command=acheter_health_bonus)
+BT3 = Button(frame_bas, bg="black", image=button_img, command=acheter_armor_bonus)
 
 #CREATION DE LA PUB
 Fichier = []
@@ -412,6 +425,14 @@ Matt3 = PUB.create_image(x_matt_3, 0, image=Fichier[indice], anchor='nw')
 Matt4 = PUB.create_image(x_matt_4, 0, image=Fichier[indice], anchor='nw')
 Matt5 = PUB.create_image(x_matt_5, 0, image=Fichier[indice], anchor='nw')
 Matt6 = PUB.create_image(x_matt_6, 0, image=Fichier[indice], anchor='nw')
+
+
+#GENERATION AFFICHAGE STATS
+Stats_Label = Label(RES, text="N/A", width=500, image=stats_label_img, compound='center', fg='yellow', font=("Courier", 9))
+BT1_Label = Label(BT1, text="N/A", width=width//3, height = (3*height//20), image=button_img, compound='center', fg='yellow', font=("Courrier", 20))
+BT2_Label = Label(BT2, text="N/A", width=width//3, height = (3*height//20), image=button_img, compound='center', fg='yellow', font=("Courrier", 20))
+BT3_Label = Label(BT3, text="N/A", width=width//3, height = (3*height//20), image=button_img, compound='center', fg='yellow', font=("Courrier", 20))
+recalc_stats_label()
 
 #GENERATION DE LA MAP
 coord_y = 0 - (16*(height//20)//17)
@@ -428,74 +449,74 @@ for i in range (len(data)):
     coord_x = 0
     for e in data[i]:
         if e == "%":
-            JEU.create_image(coord_x, coord_y, image= Mur_Tk, anchor='nw')
-            colision.append([coord_x,coord_y])
+            JEU.create_image(coord_x, coord_y, image=Mur_Tk, anchor='nw')
+            colision.append([coord_x, coord_y])
         elif e == "A":
-            JEU.create_image(coord_x, coord_y, image= A_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image=A_Tk, anchor='nw')
         elif e == "B":
-            JEU.create_image(coord_x, coord_y, image= B_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image=B_Tk, anchor='nw')
         elif e == "C":
-            JEU.create_image(coord_x, coord_y, image= C_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image=C_Tk, anchor='nw')
         elif e == "D":
-            JEU.create_image(coord_x, coord_y, image= D_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image=D_Tk, anchor='nw')
         elif e == "E":
-            JEU.create_image(coord_x, coord_y, image= E_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image=E_Tk, anchor='nw')
         elif e == "F":
-            JEU.create_image(coord_x, coord_y, image= F_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image=F_Tk, anchor='nw')
         elif e == "G":
-            JEU.create_image(coord_x, coord_y, image= G_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image=G_Tk, anchor='nw')
         elif e == "H":
-            JEU.create_image(coord_x, coord_y, image= H_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image=H_Tk, anchor='nw')
         elif e == "I":
-            JEU.create_image(coord_x, coord_y, image= I_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image=I_Tk, anchor='nw')
         elif e == "J":
-            JEU.create_image(coord_x, coord_y, image= J_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image=J_Tk, anchor='nw')
         elif e == "K":
-            JEU.create_image(coord_x, coord_y, image= K_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image=K_Tk, anchor='nw')
         elif e == "L":
-            JEU.create_image(coord_x, coord_y, image= L_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image=L_Tk, anchor='nw')
         elif e == "M":
-            JEU.create_image(coord_x, coord_y, image= M_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image=M_Tk, anchor='nw')
         elif e == "N":
-            JEU.create_image(coord_x, coord_y, image= N_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image=N_Tk, anchor='nw')
         elif e == "O":
-            JEU.create_image(coord_x, coord_y, image= O_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image=O_Tk, anchor='nw')
         elif e == "P":
-            JEU.create_image(coord_x, coord_y, image= P_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image=P_Tk, anchor='nw')
         elif e == "Q":
-            JEU.create_image(coord_x, coord_y, image= Q_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image=Q_Tk, anchor='nw')
         elif e == "R":
-            JEU.create_image(coord_x, coord_y, image= R_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image=R_Tk, anchor='nw')
         elif e == "S":
-            JEU.create_image(coord_x, coord_y, image= S_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image=S_Tk, anchor='nw')
         elif e == "T":
-            JEU.create_image(coord_x, coord_y, image= T_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image=T_Tk, anchor='nw')
         elif e == "U":
-            JEU.create_image(coord_x, coord_y, image= U_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image=U_Tk, anchor='nw')
         elif e == "V":
-            JEU.create_image(coord_x, coord_y, image= V_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image=V_Tk, anchor='nw')
         elif e == "W":
-            JEU.create_image(coord_x, coord_y, image= W_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image=W_Tk, anchor='nw')
         elif e == "!":
-            JEU.create_image(coord_x, coord_y, image= X_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image=X_Tk, anchor='nw')
         elif e == ":":
-            JEU.create_image(coord_x, coord_y, image= Y_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image=Y_Tk, anchor='nw')
         elif e == "#":
-            JEU.create_image(coord_x, coord_y, image= Z_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image=Z_Tk, anchor='nw')
         elif e == "@":
-            JEU.create_image(coord_x, coord_y, image= ZZ_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image=ZZ_Tk, anchor='nw')
         elif e == "X":
-            JEU.create_image(coord_x, coord_y, image= AB_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image=AB_Tk, anchor='nw')
         elif e == "Y":
-            JEU.create_image(coord_x, coord_y, image= CD_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image=CD_Tk, anchor='nw')
         elif e == "Z":
-            JEU.create_image(coord_x, coord_y, image= EF_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image=EF_Tk, anchor='nw')
         elif e == "?":
-            JEU.create_image(coord_x, coord_y, image= GH_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image=GH_Tk, anchor='nw')
 
         coord_x += (width//31)
 
-#CREATION IMAGES JOUEURS
+#CREATION IMAGES JOUEUR
 Joueur_Image_D = JEU.create_image((Joueur.x, Joueur.y),image=Joueur_Tk_D, anchor='nw')
 Joueur_Image_G = JEU.create_image((-100,-100),image=Joueur_Tk_G, anchor='nw')
 Joueur_Image_B = JEU.create_image((-100,-100),image=Joueur_Tk_B, anchor='nw')
@@ -575,9 +596,21 @@ RES.pack(side = RIGHT)
 JEU.pack()
 
 #PACKS BUTTON BAS
+BT1.pack_propagate(0)
+BT2.pack_propagate(0)
+BT3.pack_propagate(0)
 BT1.pack(side = LEFT)
 BT2.pack(side = LEFT)
 BT3.pack(side = LEFT)
+
+#PACKS STATS LABEL
+Stats_Label.pack(side = LEFT)
+BT1_Label.pack(expand=True)
+BT2_Label.pack(expand=True)
+BT3_Label.pack(expand=True)
+
+
+
 
 anim()
 debut()
