@@ -256,23 +256,104 @@ def fin():
 #IMAGES
 pixel_ref_button = PhotoImage(width=width//3,height=3*height//20)
 
-Sable = Image.open("Textures/Sable.png")
-Herbe = Image.open("Textures/Herbe.png")
-Neige = Image.open("Textures/Neige.png")
-Salle = Image.open("Textures/Salle.png")
-Mur = Image.open("Textures/Mur.png")
+Mur = Image.open("Textures/%.png")
+A = Image.open("Textures/A.png")
+B = Image.open("Textures/B.png")
+C = Image.open("Textures/C.png")
+D = Image.open("Textures/D.png")
+E = Image.open("Textures/E.png")
+F = Image.open("Textures/F.png")
+G = Image.open("Textures/G.png")
+H = Image.open("Textures/H.png")
+I = Image.open("Textures/I.png")
+J = Image.open("Textures/J.png")
+K = Image.open("Textures/K.png")
+L = Image.open("Textures/L.png")
+M = Image.open("Textures/M.png")
+N = Image.open("Textures/N.png")
+O = Image.open("Textures/O.png")
+P = Image.open("Textures/P.png")
+Q = Image.open("Textures/Q.png")
+R = Image.open("Textures/R.png")
+S = Image.open("Textures/S.png")
+T = Image.open("Textures/T.png")
+U = Image.open("Textures/U.png")
+V = Image.open("Textures/V.png")
+W = Image.open("Textures/W.png")
+X = Image.open("Textures/X.png")
+Y = Image.open("Textures/Y.png")
+Z = Image.open("Textures/Z.png")
+ZZ = Image.open("Textures/ZZ.png")
+AB = Image.open("Textures/AB.png")
+CD = Image.open("Textures/CD.png")
+EF = Image.open("Textures/EF.png")
+GH = Image.open("Textures/GH.png")
 
-Sable_resize = Sable.resize((width//31,(16*(height//20)//17)), resample = 3)
-Herbe_resize = Herbe.resize((width//31,(16*(height//20)//17)), resample = 3)
-Neige_resize = Neige.resize((width//31,(16*(height//20)//17)), resample = 3)
-Salle_resize = Salle.resize((width//31,(16*(height//20)//17)), resample = 3)
 Mur_resize = Mur.resize((width//31,(16*(height//20)//17)), resample = 3)
+A_resize = A.resize((width//31,(16*(height//20)//17)), resample = 3)
+B_resize = B.resize((width//31,(16*(height//20)//17)), resample = 3)
+C_resize = C.resize((width//31,(16*(height//20)//17)), resample = 3)
+D_resize = D.resize((width//31,(16*(height//20)//17)), resample = 3)
+E_resize = E.resize((width//31,(16*(height//20)//17)), resample = 3)
+F_resize = F.resize((width//31,(16*(height//20)//17)), resample = 3)
+G_resize = G.resize((width//31,(16*(height//20)//17)), resample = 3)
+H_resize = H.resize((width//31,(16*(height//20)//17)), resample = 3)
+I_resize = I.resize((width//31,(16*(height//20)//17)), resample = 3)
+J_resize = J.resize((width//31,(16*(height//20)//17)), resample = 3)
+K_resize = K.resize((width//31,(16*(height//20)//17)), resample = 3)
+L_resize = L.resize((width//31,(16*(height//20)//17)), resample = 3)
+M_resize = M.resize((width//31,(16*(height//20)//17)), resample = 3)
+N_resize = N.resize((width//31,(16*(height//20)//17)), resample = 3)
+O_resize = O.resize((width//31,(16*(height//20)//17)), resample = 3)
+P_resize = P.resize((width//31,(16*(height//20)//17)), resample = 3)
+Q_resize = Q.resize((width//31,(16*(height//20)//17)), resample = 3)
+R_resize = R.resize((width//31,(16*(height//20)//17)), resample = 3)
+S_resize = S.resize((width//31,(16*(height//20)//17)), resample = 3)
+T_resize = T.resize((width//31,(16*(height//20)//17)), resample = 3)
+U_resize = U.resize((width//31,(16*(height//20)//17)), resample = 3)
+V_resize = V.resize((width//31,(16*(height//20)//17)), resample = 3)
+W_resize = W.resize((width//31,(16*(height//20)//17)), resample = 3)
+X_resize = X.resize((width//31,(16*(height//20)//17)), resample = 3)
+Y_resize = Y.resize((width//31,(16*(height//20)//17)), resample = 3)
+Z_resize = Z.resize((width//31,(16*(height//20)//17)), resample = 3)
+ZZ_resize = ZZ.resize((width//31,(16*(height//20)//17)), resample = 3)
+AB_resize = AB.resize((width//31,(16*(height//20)//17)), resample = 3)
+CD_resize = CD.resize((width//31,(16*(height//20)//17)), resample = 3)
+EF_resize = EF.resize((width//31,(16*(height//20)//17)), resample = 3)
+GH_resize = GH.resize((width//31,(16*(height//20)//17)), resample = 3)
 
-Sable_Tk = ImageTk.PhotoImage(Sable_resize)
-Herbe_Tk = ImageTk.PhotoImage(Herbe_resize)
-Neige_Tk = ImageTk.PhotoImage(Neige_resize)
-Salle_Tk = ImageTk.PhotoImage(Salle_resize)
 Mur_Tk = ImageTk.PhotoImage(Mur_resize)
+A_Tk = ImageTk.PhotoImage(A_resize)
+B_Tk = ImageTk.PhotoImage(B_resize)
+C_Tk = ImageTk.PhotoImage(C_resize)
+D_Tk = ImageTk.PhotoImage(D_resize)
+E_Tk = ImageTk.PhotoImage(E_resize)
+F_Tk = ImageTk.PhotoImage(F_resize)
+G_Tk = ImageTk.PhotoImage(G_resize)
+H_Tk = ImageTk.PhotoImage(H_resize)
+I_Tk = ImageTk.PhotoImage(I_resize)
+J_Tk = ImageTk.PhotoImage(J_resize)
+K_Tk = ImageTk.PhotoImage(K_resize)
+L_Tk = ImageTk.PhotoImage(L_resize)
+M_Tk = ImageTk.PhotoImage(M_resize)
+N_Tk = ImageTk.PhotoImage(N_resize)
+O_Tk = ImageTk.PhotoImage(O_resize)
+P_Tk = ImageTk.PhotoImage(P_resize)
+Q_Tk = ImageTk.PhotoImage(Q_resize)
+R_Tk = ImageTk.PhotoImage(R_resize)
+S_Tk = ImageTk.PhotoImage(S_resize)
+T_Tk = ImageTk.PhotoImage(T_resize)
+U_Tk = ImageTk.PhotoImage(U_resize)
+V_Tk = ImageTk.PhotoImage(V_resize)
+W_Tk = ImageTk.PhotoImage(W_resize)
+X_Tk = ImageTk.PhotoImage(X_resize)
+Y_Tk = ImageTk.PhotoImage(Y_resize)
+Z_Tk = ImageTk.PhotoImage(Z_resize)
+ZZ_Tk = ImageTk.PhotoImage(ZZ_resize)
+AB_Tk = ImageTk.PhotoImage(AB_resize)
+CD_Tk = ImageTk.PhotoImage(CD_resize)
+EF_Tk = ImageTk.PhotoImage(EF_resize)
+GH_Tk = ImageTk.PhotoImage(GH_resize)
 
 Joueur_IMG_D = Image.open("Joueurs/Joueur_droite.png")
 Joueur_IMG_G = Image.open("Joueurs/Joueur_gauche.png")
@@ -312,7 +393,7 @@ PUB = Canvas(frame_haut, width = width - 500 - 5, height = 22, bg = "white")
 RES = Canvas(frame_haut, width = 500, height = 22, bg = "yellow")
 
 #CANVAS MILIEU
-JEU = Canvas(frame_millieu, width = width, height = (16*height//20), bg = "Gray")
+JEU = Canvas(frame_millieu, width = width, height = (16*height//20), bg = "black")
 COMBAT = Canvas(frame_millieu, width = width, height = (16*height//20), bg = "Black")
 
 #BOUTONS BAS
@@ -349,14 +430,69 @@ for i in range (len(data)):
         if e == "%":
             JEU.create_image(coord_x, coord_y, image= Mur_Tk, anchor='nw')
             colision.append([coord_x,coord_y])
+        elif e == "A":
+            JEU.create_image(coord_x, coord_y, image= A_Tk, anchor='nw')
+        elif e == "B":
+            JEU.create_image(coord_x, coord_y, image= B_Tk, anchor='nw')
+        elif e == "C":
+            JEU.create_image(coord_x, coord_y, image= C_Tk, anchor='nw')
+        elif e == "D":
+            JEU.create_image(coord_x, coord_y, image= D_Tk, anchor='nw')
+        elif e == "E":
+            JEU.create_image(coord_x, coord_y, image= E_Tk, anchor='nw')
         elif e == "F":
-            JEU.create_image(coord_x, coord_y, image= Salle_Tk, anchor='nw')
-        elif e == "S":
-            JEU.create_image(coord_x, coord_y, image= Sable_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image= F_Tk, anchor='nw')
+        elif e == "G":
+            JEU.create_image(coord_x, coord_y, image= G_Tk, anchor='nw')
         elif e == "H":
-            JEU.create_image(coord_x, coord_y, image= Herbe_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image= H_Tk, anchor='nw')
+        elif e == "I":
+            JEU.create_image(coord_x, coord_y, image= I_Tk, anchor='nw')
+        elif e == "J":
+            JEU.create_image(coord_x, coord_y, image= J_Tk, anchor='nw')
+        elif e == "K":
+            JEU.create_image(coord_x, coord_y, image= K_Tk, anchor='nw')
+        elif e == "L":
+            JEU.create_image(coord_x, coord_y, image= L_Tk, anchor='nw')
+        elif e == "M":
+            JEU.create_image(coord_x, coord_y, image= M_Tk, anchor='nw')
         elif e == "N":
-            JEU.create_image(coord_x, coord_y, image= Neige_Tk, anchor='nw')
+            JEU.create_image(coord_x, coord_y, image= N_Tk, anchor='nw')
+        elif e == "O":
+            JEU.create_image(coord_x, coord_y, image= O_Tk, anchor='nw')
+        elif e == "P":
+            JEU.create_image(coord_x, coord_y, image= P_Tk, anchor='nw')
+        elif e == "Q":
+            JEU.create_image(coord_x, coord_y, image= Q_Tk, anchor='nw')
+        elif e == "R":
+            JEU.create_image(coord_x, coord_y, image= R_Tk, anchor='nw')
+        elif e == "S":
+            JEU.create_image(coord_x, coord_y, image= S_Tk, anchor='nw')
+        elif e == "T":
+            JEU.create_image(coord_x, coord_y, image= T_Tk, anchor='nw')
+        elif e == "U":
+            JEU.create_image(coord_x, coord_y, image= U_Tk, anchor='nw')
+        elif e == "V":
+            JEU.create_image(coord_x, coord_y, image= V_Tk, anchor='nw')
+        elif e == "W":
+            JEU.create_image(coord_x, coord_y, image= W_Tk, anchor='nw')
+        elif e == "!":
+            JEU.create_image(coord_x, coord_y, image= X_Tk, anchor='nw')
+        elif e == ":":
+            JEU.create_image(coord_x, coord_y, image= Y_Tk, anchor='nw')
+        elif e == "#":
+            JEU.create_image(coord_x, coord_y, image= Z_Tk, anchor='nw')
+        elif e == "@":
+            JEU.create_image(coord_x, coord_y, image= ZZ_Tk, anchor='nw')
+        elif e == "X":
+            JEU.create_image(coord_x, coord_y, image= AB_Tk, anchor='nw')
+        elif e == "Y":
+            JEU.create_image(coord_x, coord_y, image= CD_Tk, anchor='nw')
+        elif e == "Z":
+            JEU.create_image(coord_x, coord_y, image= EF_Tk, anchor='nw')
+        elif e == "?":
+            JEU.create_image(coord_x, coord_y, image= GH_Tk, anchor='nw')
+
         coord_x += (width//31)
 
 #CREATION IMAGES JOUEURS
