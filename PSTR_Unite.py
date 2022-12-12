@@ -1,6 +1,6 @@
 ﻿class Unite :
 
-    def __init__(self,x,y,z,pv_mx,pc,shield,cost_m,cost_e,typ):
+    def __init__(self, x, y, z, pv_mx, pc, shield, cost_m, cost_e, typ):
 
         assert type(x) == int and type(y) == int and type(z) == int
         assert type(pv_mx) == int and pv_mx > 0
@@ -9,7 +9,6 @@
         assert type(cost_m) == int and cost_m > 0
         assert type(cost_e) == int and cost_e > 0
         assert 1 <= typ <= 21
-        # Assignation des types : 1(organique) 2(mechanique) 3(mecano) 4(medecin)
 
         self.x = x
         self.y = y
@@ -27,6 +26,7 @@
         self.damage_bonus = 0
         self.health_bonus = 0
         self.armor_bonus = 0
+        self.shield_bonus = 0
         self.damage_multiplier = 1
         self.armor_multiplier = 1
 
@@ -79,32 +79,29 @@
     def Get_bonus_armor(self):
         return(self.bonus_armor)
 
-    def Get_damage_multiplier(self):
-        return(self.damage_multiplier)
-
-    def Get_armor_multiplier(self):
-        return(self.armor_multiplier)
-
     def Get_bonus_damage_cost(self):
-        return(100 + 100 * self.damage_bonus)
+        return(100 + 10 * self.damage_bonus)
 
     def Get_bonus_Health_cost(self):
-        return(75 + 50 * self.health_bonus)
+        return(75 + 5 * self.health_bonus)
 
     def Get_bonus_armor_cost(self):
-        return(75 + 100 * self.armor_bonus)
+        return(75 + 10 * self.armor_bonus)
 
     def get_damage_multiplier_cost(self):
-        return(150 + 200**self.damage_multiplier)
+        return(150 + 20**self.damage_multiplier)
 
     def Get_armor_multiplier_cost(self):
-        return(150 + 200**self.damage_multiplier)
+        return(150 + 20**self.damage_multiplier)
 
     def Get_true_damage(self):
         return(round(self.pc+(self.damage_bonus*self.damage_multiplier)))
 
     def Get_true_max_health(self):
-        return(self.pv_mx+(self.health_bonus*10))
+        return(self.pv_mx+(self.health_bonus))
+
+    def Get_true_shield(self):
+        return(self.shield+(self.armor_bonus))
 
 
     def deplacer(self,dx,dy,dz):
@@ -157,7 +154,7 @@
 
         assert type(degats) == int and degats >= 0
 
-        degats_subits = round(degats - (degats*(self.shield/(self.shield + 100))))
+        degats_subits = round(degats - (degats*(self.Get_true_shield()/(self.Get_true_shield() + 100))))
         if self.pv - degats_subits <= 0:
             self.pv = 0
         else:
@@ -233,27 +230,18 @@
 
 
     def acheter_damage_bonus(self):
-        if self.verif_achetable(100 + 100 * self.damage_bonus):
-            self.gold -= round(100 + 100 * self.damage_bonus)
-            self.damage_bonus += 1
+        if self.verif_achetable(self.Get_bonus_damage_cost()):
+            self.gold -= round(self.Get_bonus_damage_cost())
+            self.damage_bonus += 10
 
     def acheter_health_bonus(self):
-        if self.verif_achetable(75 + 50 * self.health_bonus):
-            self.gold -= round(75 + 50 * self.health_bonus)
-            self.health_bonus += 1
+        if self.verif_achetable(self.Get_bonus_Health_cost()):
+            self.gold -= round(self.Get_bonus_Health_cost())
+            self.health_bonus += 10
+            self.pv = int((self.pv/(self.Get_true_max_health()-10)) * self.Get_true_max_health())
 
     def acheter_armor_bonus(self):
-        if self.verif_achetable(75 + 100 * self.armor_bonus):
-            self.gold -= round(75 + 100 * self.armor_bonus)
-            self.armor_bonus += 1
-
-    def acheter_damage_multi(self):
-        if self.verif_achetable(150 + 200**self.damage_multiplier):
-            self.gold -= round(150 + 200**self.damage_multiplier)
-            self.damage_multiplier += 1.25
-
-    def acheter_armor_multi(self):
-        if self.verif_achetable(150 + 200**self.armor_multiplier):
-            self.gold -= round(150 + 200**self.armor_multiplier)
-            self.armor_multiplier += 1.25
+        if self.verif_achetable(self.Get_bonus_armor_cost()):
+            self.gold -= round(self.Get_bonus_armor_cost())
+            self.armor_bonus += 10
 
