@@ -1,9 +1,10 @@
 
-
+from time import sleep
 from PSTR_Unite import*
 from tkinter import*
 from PIL import Image, ImageTk
 import random
+
 
 fen = Tk()
 fen.title("JEU")
@@ -31,91 +32,121 @@ Joueur = Unite(x, y, 0, 100, 50, 50, 42, 42, 1)
 
 def combat(x, y):
     coord = [x, y]
-    coord_boss = [Boss.x, Boss.y]
-    coord_boss_2 = [Boss.x + width//31, Boss.y]
-    coord_boss_3 = [Boss.x + 2*width//31, Boss.y]
-    coord_boss_4 = [Boss.x, Boss.y + (16*(height//20)//17)]
-    coord_boss_5 = [Boss.x + width//31, Boss.y + (16*(height//20)//17)]
-    coord_boss_6 = [Boss.x + 2*width//31, Boss.y + (16*(height//20)//17)]
-    coord_boss_7 = [Boss.x, Boss.y + 2*(16*(height//20)//17)]
-    coord_boss_8 = [Boss.x + width//31, Boss.y + 2*(16*(height//20)//17)]
-    coord_boss_9 = [Boss.x + 2*width//31, Boss.y + 2*(16*(height//20)//17)]
-
     for e in Ennemis:
         coord_ennemie = [e.x, e.y]
         if coord == coord_ennemie:
-            cb = Tk()
-            cb.title("Combat")
-            cb.attributes("-fullscreen", True)
-            strt = random.randint(1, 100)
-            if strt > 100//Joueur.lv:
-                while Joueur.Get_pv() > 0 and e.Get_pv() > 0:
-                    Joueur.subir_degats(e.Get_pc())
-                    e.subir_degats(Joueur.Get_true_damage())
-            else:
-                while Joueur.Get_pv() > 0 and e.Get_pv() > 0:
-                    e.subir_degats(Joueur.Get_true_damage())
-                    Joueur.subir_degats(e.Get_pc())
-            Joueur.augmenter_po(e.Get_pv_mx()*3)
-            cb.destroy()
-            if Joueur.Get_pv() >= 0:
-                if e.typ == 2:
-                    JEU.coords(Mechant1_image, -100, -100)
-                elif e.typ == 3:
-                    JEU.coords(Mechant2_image, -100, -100)
-                elif e.typ == 4:
-                    JEU.coords(Mechant3_image, -100, -100)
-                elif e.typ == 5:
-                    JEU.coords(Mechant4_image, -100, -100)
-                elif e.typ == 6:
-                    JEU.coords(Mechant5_image, -100, -100)
-                elif e.typ == 7:
-                    JEU.coords(Mechant6_image, -100, -100)
-                elif e.typ == 8:
-                    JEU.coords(Mechant7_image, -100, -100)
-                elif e.typ == 9:
-                    JEU.coords(Mechant8_image, -100, -100)
-                elif e.typ == 10:
-                    JEU.coords(Mechant9_image, -100, -100)
-                elif e.typ == 11:
-                    JEU.coords(Mechant10_image, -100, -100)
-                elif e.typ == 12:
-                    JEU.coords(Mechant11_image, -100, -100)
-                elif e.typ == 14:
-                    JEU.coords(Mechant13_image, -100, -100)
-                elif e.typ == 15:
-                    JEU.coords(Mechant14_image, -100, -100)
-                elif e.typ == 16:
-                    JEU.coords(Mechant15_image, -100, -100)
-                elif e.typ == 17:
-                    JEU.coords(Mechant16_image, -100, -100)
-                elif e.typ == 18:
-                    JEU.coords(Mechant17_image, -100, -100)
-                elif e.typ == 19:
-                    JEU.coords(Mechant18_image, -100, -100)
-                elif e.typ == 20:
-                    JEU.coords(Mechant19_image, -100, -100)
+            combat_screen(e)
     recalc_stats_label()
+    check_boss_combat(coord)
     if Joueur.Get_pv() == 0:
         perdu()
         Reset_Save()
 
+def check_boss_combat(coord):
+    coord_boss = [Boss.x, Boss.y]
+    coord_boss_2 = [Boss.x + width // 31, Boss.y]
+    coord_boss_3 = [Boss.x + 2 * width // 31, Boss.y]
+    coord_boss_4 = [Boss.x, Boss.y + (16 * (height // 20) // 17)]
+    coord_boss_5 = [Boss.x + width // 31, Boss.y + (16 * (height // 20) // 17)]
+    coord_boss_6 = [Boss.x + 2 * width // 31, Boss.y + (16 * (height // 20) // 17)]
+    coord_boss_7 = [Boss.x, Boss.y + 2 * (16 * (height // 20) // 17)]
+    coord_boss_8 = [Boss.x + width // 31, Boss.y + 2 * (16 * (height // 20) // 17)]
+    coord_boss_9 = [Boss.x + 2 * width // 31, Boss.y + 2 * (16 * (height // 20) // 17)]
     if coord == coord_boss or coord == coord_boss_2 or coord == coord_boss_3 or coord == coord_boss_4 or coord == coord_boss_5 or coord == coord_boss_6 or coord == coord_boss_7 or coord == coord_boss_8 or coord == coord_boss_9:
         print("a")
         cb = Tk()
         cb.title("Combat")
         cb.attributes("-fullscreen", True)
         strt = random.randint(1, 100)
-        if strt > 100//Joueur.lv:
-            while Joueur.pv > 0 and e.pv > 0:
-                Joueur.subir_degats(e.pc)
-                e.subir_degats(Joueur.pc)
+        e = Boss
+        if strt > 100//Joueur.Get_lv():
+            while Joueur.Get_pv() > 0 and e.Get_pv() > 0:
+                Joueur.subir_degats(e.Get_pc())
+                e.subir_degats(Joueur.Get_pc())
         else:
             while Joueur.pv > 0 and e.pv > 0:
-                e.subir_degats(Joueur.pc)
-                Joueur.subir_degats(e.pc)
+                e.subir_degats(Joueur.Get_pc())
+                Joueur.subir_degats(e.Get_pc())
         cb.destroy()
         fin()
+
+def combat_screen(e):
+    #creation fenetre
+    cb = Tk()
+    cb.title("Combat")
+    cb.attributes("-fullscreen", True)
+    cb.config(bg="black")
+
+    player_stats = Label(cb, bg="black",fg='red', font=("Arial", width//40), text="PV : "+str(Joueur.Get_pv())+"/"+str(Joueur.Get_true_max_health()))
+
+    player_stats.place(x=width//2, y=height//2, anchor='s')
+
+    def update_screen():
+        player_stats.config(text="PV : "+str(Joueur.Get_pv())+"/"+str(Joueur.Get_true_max_health()))
+    #Gestion combat
+    def combat():
+        who_start = random.randint(1, 100)
+        if who_start > 100 // Joueur.Get_lv():
+            while Joueur.Get_pv() > 0 and e.Get_pv() > 0:
+                Joueur.subir_degats(e.Get_pc())
+                e.subir_degats(Joueur.Get_true_damage())
+                update_screen()
+                sleep(1)
+                cb.update()
+
+        else:
+            while Joueur.Get_pv() > 0 and e.Get_pv() > 0:
+                e.subir_degats(Joueur.Get_true_damage())
+                Joueur.subir_degats(e.Get_pc())
+                update_screen()
+                sleep(1)
+                cb.update()
+                cb.mainloop()
+
+        if Joueur.Get_pv() >= 0:
+            if e.typ == 2:
+                JEU.coords(Mechant1_image, -100, -100)
+            elif e.typ == 3:
+                JEU.coords(Mechant2_image, -100, -100)
+            elif e.typ == 4:
+                JEU.coords(Mechant3_image, -100, -100)
+            elif e.typ == 5:
+                JEU.coords(Mechant4_image, -100, -100)
+            elif e.typ == 6:
+                JEU.coords(Mechant5_image, -100, -100)
+            elif e.typ == 7:
+                JEU.coords(Mechant6_image, -100, -100)
+            elif e.typ == 8:
+                JEU.coords(Mechant7_image, -100, -100)
+            elif e.typ == 9:
+                JEU.coords(Mechant8_image, -100, -100)
+            elif e.typ == 10:
+                JEU.coords(Mechant9_image, -100, -100)
+            elif e.typ == 11:
+                JEU.coords(Mechant10_image, -100, -100)
+            elif e.typ == 12:
+                JEU.coords(Mechant11_image, -100, -100)
+            elif e.typ == 14:
+                JEU.coords(Mechant13_image, -100, -100)
+            elif e.typ == 15:
+                JEU.coords(Mechant14_image, -100, -100)
+            elif e.typ == 16:
+                JEU.coords(Mechant15_image, -100, -100)
+            elif e.typ == 17:
+                JEU.coords(Mechant16_image, -100, -100)
+            elif e.typ == 18:
+                JEU.coords(Mechant17_image, -100, -100)
+            elif e.typ == 19:
+                JEU.coords(Mechant18_image, -100, -100)
+            elif e.typ == 20:
+                JEU.coords(Mechant19_image, -100, -100)
+        # Reward et destruction fenetre combat
+        Joueur.augmenter_po(e.Get_pv_mx() * 3 + e.Get_pc())
+
+    combat()
+    cb.mainloop()
+    cb.destroy()
+
 
 def recalc_stats_label():
     global Stats_Label
