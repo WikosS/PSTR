@@ -28,7 +28,6 @@ x = 0
 y = 15*(16*(height//20)//17)
 
 Joueur = Unite(x, y, 0, 100, 50, 50, 42, 42, 1)
-Joueur.gold = 1000
 
 def combat(x, y):
     coord = [x, y]
@@ -50,15 +49,16 @@ def combat(x, y):
             cb.attributes("-fullscreen", True)
             strt = random.randint(1, 100)
             if strt > 100//Joueur.lv:
-                while Joueur.pv > 0 and e.pv > 0:
-                    Joueur.subir_degats(e.pc)
+                while Joueur.Get_pv() > 0 and e.Get_pv() > 0:
+                    Joueur.subir_degats(e.Get_pc())
                     e.subir_degats(Joueur.Get_true_damage())
             else:
-                while Joueur.pv > 0 and e.pv > 0:
+                while Joueur.Get_pv() > 0 and e.Get_pv() > 0:
                     e.subir_degats(Joueur.Get_true_damage())
-                    Joueur.subir_degats(e.pc)
+                    Joueur.subir_degats(e.Get_pc())
+            Joueur.augmenter_po(e.Get_pv_mx()*3)
             cb.destroy()
-            if Joueur.pv >= 0:
+            if Joueur.Get_pv() >= 0:
                 if e.typ == 2:
                     JEU.coords(Mechant1_image, -100, -100)
                 elif e.typ == 3:
@@ -96,6 +96,9 @@ def combat(x, y):
                 elif e.typ == 20:
                     JEU.coords(Mechant19_image, -100, -100)
     recalc_stats_label()
+    if Joueur.Get_pv() == 0:
+        perdu()
+        Reset_Save()
 
     if coord == coord_boss or coord == coord_boss_2 or coord == coord_boss_3 or coord == coord_boss_4 or coord == coord_boss_5 or coord == coord_boss_6 or coord == coord_boss_7 or coord == coord_boss_8 or coord == coord_boss_9:
         print("a")
@@ -218,6 +221,7 @@ def anim():
 
 def ferme():
     fen.destroy()
+    Save()
 
 def reduire():
     fen.state("iconic")
@@ -234,20 +238,71 @@ def debut():
 
     def Jouer():
         deb.destroy()
+        Load()
 
     def Stop():
         deb.destroy()
         fen.destroy()
 
+
     TEXT = Label(deb, bg="black", font=("Arial", width//40), text="BIENVENUE DANS NOTRE JEUX VIDEO", fg="white")
     START = Button(deb, text="JOUER", bg="blue", width=width//50, height=height //500, command=Jouer)
     STOP = Button(deb, text="FERMER", bg="red", width=width//50, height=height //500, command=Stop)
+    RESET_SAVE = Button(deb, text="RESET SAVE", bg="green", width=width//50, height=height // 500, command=Reset_Save)
 
     TEXT.place(x=width//2, y=height//5, anchor='s')
     START.place(x=width//2-width//7, y=height//3, anchor='nw')
     STOP.place(x=width//2, y=height//3, anchor='nw')
+    RESET_SAVE.place(x=width//2-width//13, y=height//3+height//31, anchor='nw')
 
     deb.mainloop()
+
+def perdu():
+    fn = Tk()
+    fn.title=("PERDU")
+    fn.attributes("-fullscreen", True)
+    fn.config(bg= "black")
+    TXT = Label(fn, bg="black", font=("Arial", width//40), text="TA PERDU :(", fg="RED")
+    TXT_2 = Label(fn, bg="black", font=("Arial", width // 40), text="RAGE QUIT EN APPUYANT SUR ALT+F4 PR REJOUER", fg="RED")
+    TXT_3 = Label(fn, bg="black", font=("Arial", width // 40), text="TA SAUVEGARDE A ETE RESET", fg="RED")
+    TXT.place(x=width//2, y=height//5, anchor='s')
+    TXT_2.place(x=width//2, y=height//5+height//15, anchor='s')
+    TXT_3.place(x=width//2, y=height//5+height//7, anchor='s')
+    Reset_Save()
+    ferme()
+# SAVE SYSTEM
+def Save():
+    with open('save.txt', 'r+') as save:
+        global Joueur
+        save.write(str(Joueur.Get_bonus_Health())+'\n')
+        save.write(str(Joueur.Get_bonus_armor())+'\n')
+        save.write(str(Joueur.Get_bonus_damage()) + '\n')
+        save.write(str(Joueur.Get_pv()) + '\n')
+        save.write(str(Joueur.Get_gold()) + '\n')
+        save.close()
+
+def Load():
+    with open('save.txt', 'r+') as save:
+        global Joueur
+        Joueur.Set_health_bonus(int(save.readline().split('\n')[0]))
+        Joueur.Set_armor_bonus(int(save.readline().split('\n')[0]))
+        Joueur.Set_damage_bonus(int(save.readline().split('\n')[0]))
+        Joueur.Set_health(int(save.readline().split('\n')[0]))
+        Joueur.Set_gold(int(save.readline().split('\n')[0]))
+        save.close()
+        recalc_stats_label()
+        deplacement(Joueur_Image_D, JEU)
+
+def Reset_Save():
+    with open('save.txt', 'r+') as save:
+        save.write('0'+'\n')
+        save.write('0'+'\n')
+        save.write('0'+'\n')
+        save.write('100'+'\n')
+        save.write('50'+'\n')
+        save.close()
+
+
 
 def fin():
     fin = Tk()
@@ -279,80 +334,80 @@ button_img = ImageTk.PhotoImage(button_img_resize)
 button_img_2 = ImageTk.PhotoImage(button_img_2_resize)
 
 Mur = Image.open("Textures/%.png")
-A = Image.open("Textures/A.png")
-B = Image.open("Textures/B.png")
-C = Image.open("Textures/C.png")
-D = Image.open("Textures/D.png")
-E = Image.open("Textures/E.png")
-F = Image.open("Textures/F.png")
-G = Image.open("Textures/G.png")
-H = Image.open("Textures/H.png")
-I = Image.open("Textures/I.png")
-J = Image.open("Textures/J.png")
-K = Image.open("Textures/K.png")
-L = Image.open("Textures/L.png")
-M = Image.open("Textures/M.png")
-N = Image.open("Textures/N.png")
-O = Image.open("Textures/O.png")
-P = Image.open("Textures/P.png")
-Q = Image.open("Textures/Q.png")
-R = Image.open("Textures/R.png")
-S = Image.open("Textures/S.png")
-T = Image.open("Textures/T.png")
-U = Image.open("Textures/U.png")
-V = Image.open("Textures/V.png")
-W = Image.open("Textures/W.png")
-X = Image.open("Textures/X.png")
-Y = Image.open("Textures/Y.png")
-Z = Image.open("Textures/Z.png")
-ZZ = Image.open("Textures/ZZ.png")
-AB = Image.open("Textures/AB.png")
-CD = Image.open("Textures/CD.png")
-EF = Image.open("Textures/EF.png")
-GH = Image.open("Textures/GH.png")
-IJ = Image.open("Textures/IJ.png")
-KL = Image.open("Textures/KL.png")
-MN = Image.open("Textures/MN.png")
-OP = Image.open("Textures/OP.png")
-QR = Image.open("Textures/QR.png")
+A_Img = Image.open("Textures/A.png")
+B_Img = Image.open("Textures/B.png")
+C_Img = Image.open("Textures/C.png")
+D_Img = Image.open("Textures/D.png")
+E_Img = Image.open("Textures/E.png")
+F_Img = Image.open("Textures/F.png")
+G_Img= Image.open("Textures/G.png")
+H_Img = Image.open("Textures/H.png")
+I_Img = Image.open("Textures/I.png")
+J_Img = Image.open("Textures/J.png")
+K_Img = Image.open("Textures/K.png")
+L_Img = Image.open("Textures/L.png")
+M_Img = Image.open("Textures/M.png")
+N_Img = Image.open("Textures/N.png")
+O_Img = Image.open("Textures/O.png")
+P_Img = Image.open("Textures/P.png")
+Q_Img = Image.open("Textures/Q.png")
+R_Img = Image.open("Textures/R.png")
+S_Img = Image.open("Textures/S.png")
+T_Img = Image.open("Textures/T.png")
+U_Img = Image.open("Textures/U.png")
+V_Img = Image.open("Textures/V.png")
+W_Img = Image.open("Textures/W.png")
+X_Img = Image.open("Textures/X.png")
+Y_Img = Image.open("Textures/Y.png")
+Z_Img = Image.open("Textures/Z.png")
+ZZ_Img = Image.open("Textures/ZZ.png")
+AB_Img = Image.open("Textures/AB.png")
+CD_Img = Image.open("Textures/CD.png")
+EF_Img = Image.open("Textures/EF.png")
+GH_Img = Image.open("Textures/GH.png")
+IJ_Img = Image.open("Textures/IJ.png")
+KL_Img = Image.open("Textures/KL.png")
+MN_Img = Image.open("Textures/MN.png")
+OP_Img = Image.open("Textures/OP.png")
+QR_Img = Image.open("Textures/QR.png")
 
 Mur_resize = Mur.resize((width//31, (16*(height//20)//17)), resample=3)
-A_resize = A.resize((width//31, (16*(height//20)//17)), resample=3)
-B_resize = B.resize((width//31, (16*(height//20)//17)), resample=3)
-C_resize = C.resize((width//31, (16*(height//20)//17)), resample=3)
-D_resize = D.resize((width//31, (16*(height//20)//17)), resample=3)
-E_resize = E.resize((width//31, (16*(height//20)//17)), resample=3)
-F_resize = F.resize((width//31, (16*(height//20)//17)), resample=3)
-G_resize = G.resize((width//31, (16*(height//20)//17)), resample=3)
-H_resize = H.resize((width//31, (16*(height//20)//17)), resample=3)
-I_resize = I.resize((width//31, (16*(height//20)//17)), resample=3)
-J_resize = J.resize((width//31, (16*(height//20)//17)), resample=3)
-K_resize = K.resize((width//31, (16*(height//20)//17)), resample=3)
-L_resize = L.resize((width//31, (16*(height//20)//17)), resample=3)
-M_resize = M.resize((width//31, (16*(height//20)//17)), resample=3)
-N_resize = N.resize((width//31, (16*(height//20)//17)), resample=3)
-O_resize = O.resize((width//31, (16*(height//20)//17)), resample=3)
-P_resize = P.resize((width//31, (16*(height//20)//17)), resample=3)
-Q_resize = Q.resize((width//31, (16*(height//20)//17)), resample=3)
-R_resize = R.resize((width//31, (16*(height//20)//17)), resample=3)
-S_resize = S.resize((width//31, (16*(height//20)//17)), resample=3)
-T_resize = T.resize((width//31, (16*(height//20)//17)), resample=3)
-U_resize = U.resize((width//31, (16*(height//20)//17)), resample=3)
-V_resize = V.resize((width//31, (16*(height//20)//17)), resample=3)
-W_resize = W.resize((width//31, (16*(height//20)//17)), resample=3)
-X_resize = X.resize((width//31, (16*(height//20)//17)), resample=3)
-Y_resize = Y.resize((width//31, (16*(height//20)//17)), resample=3)
-Z_resize = Z.resize((width//31, (16*(height//20)//17)), resample=3)
-ZZ_resize = ZZ.resize((width//31, (16*(height//20)//17)), resample=3)
-AB_resize = AB.resize((width//31, (16*(height//20)//17)), resample=3)
-CD_resize = CD.resize((width//31, (16*(height//20)//17)), resample=3)
-EF_resize = EF.resize((width//31, (16*(height//20)//17)), resample=3)
-GH_resize = GH.resize((width//31, (16*(height//20)//17)), resample=3)
-IJ_resize = IJ.resize((width//31, (16*(height//20)//17)), resample=3)
-KL_resize = KL.resize((width//31, (16*(height//20)//17)), resample=3)
-MN_resize = MN.resize((width//31, (16*(height//20)//17)), resample=3)
-OP_resize = OP.resize((width//31, (16*(height//20)//17)), resample=3)
-QR_resize = QR.resize((width//31, (16*(height//20)//17)), resample=3)
+A_resize = A_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+B_resize = B_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+C_resize = C_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+D_resize = D_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+E_resize = E_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+F_resize = F_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+G_resize = G_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+H_resize = H_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+I_resize = I_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+J_resize = J_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+K_resize = K_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+L_resize = L_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+M_resize = M_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+N_resize = N_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+O_resize = O_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+P_resize = P_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+Q_resize = Q_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+R_resize = R_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+S_resize = S_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+T_resize = T_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+U_resize = U_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+V_resize = V_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+W_resize = W_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+X_resize = X_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+Y_resize = Y_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+Z_resize = Z_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+ZZ_resize = ZZ_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+AB_resize = AB_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+CD_resize = CD_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+EF_resize = EF_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+GH_resize = GH_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+IJ_resize = IJ_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+KL_resize = KL_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+MN_resize = MN_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+OP_resize = OP_Img.resize((width//31, (16*(height//20)//17)), resample=3)
+QR_resize = QR_Img.resize((width//31, (16*(height//20)//17)), resample=3)
 
 Mur_Tk = ImageTk.PhotoImage(Mur_resize)
 A_Tk = ImageTk.PhotoImage(A_resize)
@@ -378,14 +433,14 @@ T_Tk = ImageTk.PhotoImage(T_resize)
 U_Tk = ImageTk.PhotoImage(U_resize)
 V_Tk = ImageTk.PhotoImage(V_resize)
 W_Tk = ImageTk.PhotoImage(W_resize)
-X_Tk = ImageTk.PhotoImage(X_resize)
-Y_Tk = ImageTk.PhotoImage(Y_resize)
-Z_Tk = ImageTk.PhotoImage(Z_resize)
-ZZ_Tk = ImageTk.PhotoImage(ZZ_resize)
-AB_Tk = ImageTk.PhotoImage(AB_resize)
-CD_Tk = ImageTk.PhotoImage(CD_resize)
-EF_Tk = ImageTk.PhotoImage(EF_resize)
-GH_Tk = ImageTk.PhotoImage(GH_resize)
+t_Tk = ImageTk.PhotoImage(X_resize)
+w_Tk = ImageTk.PhotoImage(Y_resize)
+u_Tk = ImageTk.PhotoImage(Z_resize)
+p_Tk = ImageTk.PhotoImage(ZZ_resize)
+j_Tk = ImageTk.PhotoImage(AB_resize)
+m_Tk = ImageTk.PhotoImage(CD_resize)
+b_Tk = ImageTk.PhotoImage(EF_resize)
+a_Tk = ImageTk.PhotoImage(GH_resize)
 IJ_Tk = ImageTk.PhotoImage(IJ_resize)
 KL_Tk = ImageTk.PhotoImage(KL_resize)
 MN_Tk = ImageTk.PhotoImage(MN_resize)
@@ -471,22 +526,6 @@ for i in range(len(data)):
         if e == "%":
             JEU.create_image(coord_x, coord_y, image=Mur_Tk, anchor='nw')
             colision.append([coord_x, coord_y])
-        elif e == "!":
-            JEU.create_image(coord_x, coord_y, image=X_Tk, anchor='nw')
-        elif e == ":":
-            JEU.create_image(coord_x, coord_y, image=Y_Tk, anchor='nw')
-        elif e == "#":
-            JEU.create_image(coord_x, coord_y, image=Z_Tk, anchor='nw')
-        elif e == "@":
-            JEU.create_image(coord_x, coord_y, image=ZZ_Tk, anchor='nw')
-        elif e == "X":
-            JEU.create_image(coord_x, coord_y, image=AB_Tk, anchor='nw')
-        elif e == "Y":
-            JEU.create_image(coord_x, coord_y, image=CD_Tk, anchor='nw')
-        elif e == "Z":
-            JEU.create_image(coord_x, coord_y, image=EF_Tk, anchor='nw')
-        elif e == "?":
-            JEU.create_image(coord_x, coord_y, image=GH_Tk, anchor='nw')
         elif e == "$":
             JEU.create_image(coord_x, coord_y, image=IJ_Tk, anchor='nw')
             colision.append([coord_x, coord_y])
@@ -519,19 +558,19 @@ Mechant2 = Unite(round(random.randint(29, 30))*(width//31), round(random.randint
 Mechant3 = Unite(round(random.randint(0, 28))*(width//31), round(random.randint(0, 1))*(16*(height//20)//17), 0, 20, 25, 50, 42, 42, 4)
 Mechant4 = Unite(round(random.randint(0, 28))*(width//31), round(random.randint(0, 1))*(16*(height//20)//17), 0, 20, 25, 50, 42, 42, 5)
 Mechant5 = Unite(round(random.randint(0, 1))*(width//31), round(random.randint(2, 13))*(16*(height//20)//17), 0, 20, 25, 50, 42, 42, 6)
-Mechant6 = Unite(round(random.randint(2, 26))*(width//31), round(random.randint(12, 13))*(16*(height//20)//17), 0, 100, 50, 50, 42, 42, 7)
-Mechant7 = Unite(round(random.randint(2, 26))*(width//31), round(random.randint(12, 13))*(16*(height//20)//17), 0, 100, 50, 50, 42, 42, 8)
-Mechant8 = Unite(round(random.randint(26, 27))*(width//31), round(random.randint(3, 11))*(16*(height//20)//17), 0, 100, 50, 50, 42, 42, 9)
-Mechant9 = Unite(round(random.randint(3, 24))*(width//31), round(random.randint(3, 4))*(16*(height//20)//17), 0, 100, 50, 50, 42, 42, 10)
-Mechant10 = Unite(round(random.randint(3, 24))*(width//31), round(random.randint(3, 4))*(16*(height//20)//17), 0, 100, 50, 50, 42, 42, 11)
-Mechant11 = Unite(round(random.randint(3, 4))*(width//31), round(random.randint(5, 10))*(16*(height//20)//17), 0, 100, 50, 50, 42, 42, 12)
-Mechant13 = Unite(8*(width//31), round(random.randint(6, 10))*(16*(height//20)//17), 0, 100, 50, 50, 42, 42, 14)
-Mechant14 = Unite(10*(width//31), round(random.randint(6, 10))*(16*(height//20)//17), 0, 100, 50, 50, 42, 42, 15)
-Mechant15 = Unite(12*(width//31), round(random.randint(6, 10))*(16*(height//20)//17), 0, 100, 50, 50, 42, 42, 16)
-Mechant16 = Unite(14*(width//31), round(random.randint(6, 10))*(16*(height//20)//17), 0, 100, 50, 50, 42, 42, 17)
-Mechant17 = Unite(16*(width//31), round(random.randint(6, 10))*(16*(height//20)//17), 0, 100, 50, 50, 42, 42, 18)
-Mechant18 = Unite(18*(width//31), round(random.randint(6, 10))*(16*(height//20)//17), 0, 100, 50, 50, 42, 42, 19)
-Mechant19 = Unite(20*(width//31), round(random.randint(6, 10))*(16*(height//20)//17), 0, 100, 50, 50, 42, 42, 20)
+Mechant6 = Unite(round(random.randint(2, 26))*(width//31), round(random.randint(12, 13))*(16*(height//20)//17), 0, 25, 30, 50, 42, 42, 7)
+Mechant7 = Unite(round(random.randint(2, 26))*(width//31), round(random.randint(12, 13))*(16*(height//20)//17), 0, 25, 30, 50, 42, 42, 8)
+Mechant8 = Unite(round(random.randint(26, 27))*(width//31), round(random.randint(3, 11))*(16*(height//20)//17), 0, 25, 30, 50, 42, 42, 9)
+Mechant9 = Unite(round(random.randint(3, 24))*(width//31), round(random.randint(3, 4))*(16*(height//20)//17), 0, 30, 35, 50, 42, 42, 10)
+Mechant10 = Unite(round(random.randint(3, 24))*(width//31), round(random.randint(3, 4))*(16*(height//20)//17), 0, 30, 35, 50, 42, 42, 11)
+Mechant11 = Unite(round(random.randint(3, 4))*(width//31), round(random.randint(5, 10))*(16*(height//20)//17), 0, 30, 35, 50, 42, 42, 12)
+Mechant13 = Unite(8*(width//31), round(random.randint(6, 10))*(16*(height//20)//17), 0, 30, 35, 50, 42, 42, 14)
+Mechant14 = Unite(10*(width//31), round(random.randint(6, 10))*(16*(height//20)//17), 0, 35, 35, 50, 42, 42, 15)
+Mechant15 = Unite(12*(width//31), round(random.randint(6, 10))*(16*(height//20)//17), 0, 35, 40, 50, 42, 42, 16)
+Mechant16 = Unite(14*(width//31), round(random.randint(6, 10))*(16*(height//20)//17), 0, 35, 40, 50, 42, 42, 17)
+Mechant17 = Unite(16*(width//31), round(random.randint(6, 10))*(16*(height//20)//17), 0, 35, 40, 50, 42, 42, 18)
+Mechant18 = Unite(18*(width//31), round(random.randint(6, 10))*(16*(height//20)//17), 0, 35, 40, 50, 42, 42, 19)
+Mechant19 = Unite(20*(width//31), round(random.randint(6, 10))*(16*(height//20)//17), 0, 40, 50, 50, 42, 42, 20)
 Boss = Unite(22*(width//31), 7*(16*(height//20)//17), 0, 100, 50, 50, 42, 42, 21)
 
 #CREATION IMAGES ENNEMIS
