@@ -30,152 +30,188 @@ y = 15*(16*(height//20)//17)
 
 Joueur = Unite(x, y, 0, 100, 50, 50, 42, 42, 1)
 
+
+#Gestion combat
 def combat(x, y):
     coord = [x, y]
     for e in Ennemis:
-        coord_ennemie = [e.x, e.y]
+        coord_ennemie = [e.Get_x(), e.Get_y()]
         if coord == coord_ennemie:
-            who_start = random.randint(1, 100)
-            if who_start > 100 // (Joueur.Get_lv()+1):
-                while Joueur.Get_pv() > 0 and e.Get_pv() > 0:
-                    Joueur.subir_degats(e.Get_pc())
-                    e.subir_degats(Joueur.Get_true_damage())
-                    sleep(1)
-
-            else:
-                while Joueur.Get_pv() > 0 and e.Get_pv() > 0:
-                    e.subir_degats(Joueur.Get_true_damage())
-                    Joueur.subir_degats(e.Get_pc())
-                    sleep(1)
-            if Joueur.pv >= 0:
-                if e.typ == 2:
-                    JEU.coords(Mechant1_image, -100, -100)
-                elif e.typ == 3:
-                    JEU.coords(Mechant2_image, -100, -100)
-                elif e.typ == 4:
-                    JEU.coords(Mechant3_image, -100, -100)
-                elif e.typ == 5:
-                    JEU.coords(Mechant4_image, -100, -100)
-                elif e.typ == 6:
-                    JEU.coords(Mechant5_image, -100, -100)
-                elif e.typ == 7:
-                    JEU.coords(Mechant6_image, -100, -100)
-                elif e.typ == 8:
-                    JEU.coords(Mechant7_image, -100, -100)
-                elif e.typ == 9:
-                    JEU.coords(Mechant8_image, -100, -100)
-                elif e.typ == 10:
-                    JEU.coords(Mechant9_image, -100, -100)
-                elif e.typ == 11:
-                    JEU.coords(Mechant10_image, -100, -100)
-                elif e.typ == 12:
-                    JEU.coords(Mechant11_image, -100, -100)
-                elif e.typ == 14:
-                    JEU.coords(Mechant13_image, -100, -100)
-                elif e.typ == 15:
-                    JEU.coords(Mechant14_image, -100, -100)
-                elif e.typ == 16:
-                    JEU.coords(Mechant15_image, -100, -100)
-                elif e.typ == 17:
-                    JEU.coords(Mechant16_image, -100, -100)
-                elif e.typ == 18:
-                    JEU.coords(Mechant17_image, -100, -100)
-                elif e.typ == 19:
-                    JEU.coords(Mechant18_image, -100, -100)
-                elif e.typ == 20:
-                    JEU.coords(Mechant19_image, -100, -100)
+            if e.Get_pv() > 0:
+                combat_screen(e)
     recalc_stats_label()
     check_boss_combat(coord)
     if Joueur.Get_pv() == 0:
         perdu()
-        Reset_Save()
+
 
 def check_boss_combat(coord):
-    coord_boss = [Boss.x, Boss.y]
-    coord_boss_2 = [Boss.x + width // 31, Boss.y]
-    coord_boss_3 = [Boss.x + 2 * width // 31, Boss.y]
-    coord_boss_4 = [Boss.x, Boss.y + (16 * (height // 20) // 17)]
-    coord_boss_5 = [Boss.x + width // 31, Boss.y + (16 * (height // 20) // 17)]
-    coord_boss_6 = [Boss.x + 2 * width // 31, Boss.y + (16 * (height // 20) // 17)]
-    coord_boss_7 = [Boss.x, Boss.y + 2 * (16 * (height // 20) // 17)]
-    coord_boss_8 = [Boss.x + width // 31, Boss.y + 2 * (16 * (height // 20) // 17)]
-    coord_boss_9 = [Boss.x + 2 * width // 31, Boss.y + 2 * (16 * (height // 20) // 17)]
+    coord_boss = [Boss.Get_x(), Boss.Get_y()]
+    coord_boss_2 = [Boss.Get_x() + width // 31, Boss.Get_y()]
+    coord_boss_3 = [Boss.Get_x() + 2 * width // 31, Boss.Get_y()]
+    coord_boss_4 = [Boss.Get_x(), Boss.Get_y() + (16 * (height // 20) // 17)]
+    coord_boss_5 = [Boss.Get_x() + width // 31, Boss.Get_y() + (16 * (height // 20) // 17)]
+    coord_boss_6 = [Boss.Get_x() + 2 * width // 31, Boss.Get_y() + (16 * (height // 20) // 17)]
+    coord_boss_7 = [Boss.Get_x(), Boss.Get_y() + 2 * (16 * (height // 20) // 17)]
+    coord_boss_8 = [Boss.Get_x() + width // 31, Boss.Get_y() + 2 * (16 * (height // 20) // 17)]
+    coord_boss_9 = [Boss.Get_x() + 2 * width // 31, Boss.Get_y() + 2 * (16 * (height // 20) // 17)]
     if coord == coord_boss or coord == coord_boss_2 or coord == coord_boss_3 or coord == coord_boss_4 or coord == coord_boss_5 or coord == coord_boss_6 or coord == coord_boss_7 or coord == coord_boss_8 or coord == coord_boss_9:
-        print("a")
-        cb = Tk()
-        cb.title("Combat")
-        cb.attributes("-fullscreen", True)
-        strt = random.randint(1, 100)
-        e = Boss
-        if strt > 100//Joueur.Get_lv():
+        combat_screen(Boss)
+        if Joueur.Get_pv() == 0:
+            perdu()
+        else:
+            win()
+
+
+def combat_screen(e):
+    #creation fenetre
+    cb = Tk()
+    cb.title("Combat Log")
+    cb.config(bg="black")
+    cb.config(width=500, height=50)
+
+    player_stats = Label(cb, bg="black", fg='green', font=("Arial", 10), text="N/A")
+    player_loot = Label(cb, bg="black", fg='green', font=("Arial", 10), text="N/A")
+
+    player_stats.place(x=120, y=20, anchor='s')
+    player_loot.place(x=120, y=40, anchor='s')
+
+    def affichage_combat(pv_perdu, reward):
+        pv_perdu_text = "Vous avez perdu " + str(pv_perdu) + " PV durant ce combat !"
+        reward_text = "Vous avez trouvez " + str(reward) + " Gold sur le monstre !"
+        if Joueur.Get_pv() > 0:
+            player_loot.config(text=reward_text)
+            player_stats.config(text=pv_perdu_text)
+        else:
+            cb.destroy()
+
+    def combat_calc():
+        who_start = random.randint(1, 100)
+        if who_start > 100 // Joueur.Get_lv():
             while Joueur.Get_pv() > 0 and e.Get_pv() > 0:
                 Joueur.subir_degats(e.Get_pc())
-                e.subir_degats(Joueur.Get_pc())
+                e.subir_degats(Joueur.Get_true_damage())
+                cb.update()
+
         else:
-            while Joueur.pv > 0 and e.pv > 0:
-                e.subir_degats(Joueur.Get_pc())
+            while Joueur.Get_pv() > 0 and e.Get_pv() > 0:
+                e.subir_degats(Joueur.Get_true_damage())
                 Joueur.subir_degats(e.Get_pc())
-        cb.destroy()
-        fin()
+                cb.update()
+
+        if Joueur.Get_pv() >= 0:
+            if e.typ == 2:
+                JEU.coords(Mechant1_image, -100, -100)
+            elif e.typ == 3:
+                JEU.coords(Mechant2_image, -100, -100)
+            elif e.typ == 4:
+                JEU.coords(Mechant3_image, -100, -100)
+            elif e.typ == 5:
+                JEU.coords(Mechant4_image, -100, -100)
+            elif e.typ == 6:
+                JEU.coords(Mechant5_image, -100, -100)
+            elif e.typ == 7:
+                JEU.coords(Mechant6_image, -100, -100)
+            elif e.typ == 8:
+                JEU.coords(Mechant7_image, -100, -100)
+            elif e.typ == 9:
+                JEU.coords(Mechant8_image, -100, -100)
+            elif e.typ == 10:
+                JEU.coords(Mechant9_image, -100, -100)
+            elif e.typ == 11:
+                JEU.coords(Mechant10_image, -100, -100)
+            elif e.typ == 12:
+                JEU.coords(Mechant11_image, -100, -100)
+            elif e.typ == 14:
+                JEU.coords(Mechant13_image, -100, -100)
+            elif e.typ == 15:
+                JEU.coords(Mechant14_image, -100, -100)
+            elif e.typ == 16:
+                JEU.coords(Mechant15_image, -100, -100)
+            elif e.typ == 17:
+                JEU.coords(Mechant16_image, -100, -100)
+            elif e.typ == 18:
+                JEU.coords(Mechant17_image, -100, -100)
+            elif e.typ == 19:
+                JEU.coords(Mechant18_image, -100, -100)
+            elif e.typ == 20:
+                JEU.coords(Mechant19_image, -100, -100)
+        # Reward
+        Joueur.augmenter_po(e.Get_pv_mx() * 3 + e.Get_pc())
+
+#Lancement des fonction de combat et d'affichage
+    pv_start_player = Joueur.Get_pv()
+    combat_calc()
+    affichage_combat(pv_start_player-Joueur.Get_pv(), e.Get_pv_mx() * 3 + e.Get_pc())
+    recalc_stats_label()
+    cb.mainloop()
+    cb.destroy()
+
 
 def recalc_stats_label():
     global Stats_Label
-    Stats_Label.config(text="PV : "+str(Joueur.Get_pv())+"/"+str(Joueur.Get_true_max_health())+"    DMG : "+
+    Stats_Label.config(text="PV : "+str(Joueur.Get_pv())+"/"+str(Joueur.Get_true_max_health())+"    DMG : " +
                             str(Joueur.Get_true_damage()) + "    Shield : "+str(Joueur.Get_true_shield())+"    Gold : " + str(Joueur.Get_gold()))
     BT1.config(text="Upgrade DMG    Cost : "+str(Joueur.Get_bonus_damage_cost())+" Gold")
     BT2.config(text="Upgrade Max Health  Cost : "+str(Joueur.Get_bonus_Health_cost())+" Gold")
     BT3.config(text="Upgrade Shield   Cost : "+str(Joueur.Get_bonus_armor_cost())+" Gold")
 
+
+#Gestion déplacement
 def deplacement(Joueur_Image, JEU):
     if Joueur_Image == Joueur_Image_H:
-        if not colision_test(Joueur.x, Joueur.y-(16*(height//20)//17)):
-            Joueur.y -= (16*(height//20)//17)
-            JEU.coords(Joueur_Image_H, Joueur.x, Joueur.y)
+        if not colision_test(Joueur.Get_x(), Joueur.Get_y()-(16*(height//20)//17)):
+            Joueur.Set_coord(Joueur.Get_x(), Joueur.Get_y()-(16*(height//20)//17))
+            JEU.coords(Joueur_Image_H, Joueur.Get_x(), Joueur.Get_y())
             JEU.coords(Joueur_Image_D, -100, -100)
             JEU.coords(Joueur_Image_G, -100, -100)
             JEU.coords(Joueur_Image_B, -100, -100)
-            combat(Joueur.x, Joueur.y)
+            combat(Joueur.Get_x(), Joueur.Get_y())
     elif Joueur_Image == Joueur_Image_G:
-        if not colision_test(Joueur.x - width//31, Joueur.y):
-            Joueur.x -= width//31
-            JEU.coords(Joueur_Image_G, Joueur.x, Joueur.y)
+        if not colision_test(Joueur.Get_x() - width//31, Joueur.Get_y()):
+            Joueur.Set_coord(Joueur.Get_x()-width//31, Joueur.Get_y())
+            JEU.coords(Joueur_Image_G, Joueur.Get_x(), Joueur.Get_y())
             JEU.coords(Joueur_Image_D, -100, -100)
             JEU.coords(Joueur_Image_H, -100, -100)
             JEU.coords(Joueur_Image_B, -100, -100)
-            combat(Joueur.x, Joueur.y)
+            combat(Joueur.Get_x(), Joueur.Get_y())
     elif Joueur_Image == Joueur_Image_B:
-        if not colision_test(Joueur.x, Joueur.y+(16*(height//20)//17)):
-            Joueur.y += (16*(height//20)//17)
-            JEU.coords(Joueur_Image_B, Joueur.x, Joueur.y)
+        if not colision_test(Joueur.Get_x(), Joueur.Get_y()+(16*(height//20)//17)):
+            Joueur.Set_coord(Joueur.Get_x(), Joueur.Get_y()+(16*(height//20)//17))
+            JEU.coords(Joueur_Image_B, Joueur.Get_x(), Joueur.Get_y())
             JEU.coords(Joueur_Image_D, -100, -100)
             JEU.coords(Joueur_Image_H, -100, -100)
             JEU.coords(Joueur_Image_G, -100, -100)
-            combat(Joueur.x, Joueur.y)
+            combat(Joueur.Get_x(), Joueur.Get_y())
     else:
-        if not colision_test(Joueur.x + width//31, Joueur.y):
-            Joueur.x += width//31
-            JEU.coords(Joueur_Image_D, Joueur.x, Joueur.y)
+        if not colision_test(Joueur.Get_x() + width//31, Joueur.Get_y()):
+            Joueur.Set_coord(Joueur.Get_x()+width//31, Joueur.Get_y())
+            JEU.coords(Joueur_Image_D, Joueur.Get_x(), Joueur.Get_y())
             JEU.coords(Joueur_Image_G, -100, -100)
             JEU.coords(Joueur_Image_H, -100, -100)
             JEU.coords(Joueur_Image_B, -100, -100)
-            combat(Joueur.x, Joueur.y)
+            combat(Joueur.Get_x(), Joueur.Get_y())
 
 
+#Gestion Shop
 def acheter_damage_bonus():
     Joueur.acheter_damage_bonus()
     recalc_stats_label()
 
+
 def acheter_health_bonus():
     Joueur.acheter_health_bonus()
     recalc_stats_label()
+
 
 def acheter_armor_bonus():
     Joueur.acheter_armor_bonus()
     recalc_stats_label()
 
 
-def colision_test(next_x, next_y):
+def colision_test(next_x, next_y):  #Test si les coordonée du prochain déplacement se trouve dans colision
     return [next_x, next_y] in colision or next_x >= 30*width//31 or next_y >= 17*(16*(height//20)//17) or next_x < 0 or next_y < 0
+
 
 def anim():
     global x_matt, x_matt_2, x_matt_3, x_matt_4, x_matt_5, x_matt_6, indice, Fichier
@@ -199,8 +235,7 @@ def anim():
     elif x_matt_6 > width-505:
         x_matt_6 = -10
 
-
-    indice +=1
+    indice += 1
     if indice == 8:
         indice = 0
 
@@ -220,12 +255,16 @@ def anim():
 
     fen.after(25, anim)
 
+
+#Gestion fenetre
 def ferme():
     fen.destroy()
     Save()
 
+
 def reduire():
     fen.state("iconic")
+
 
 def debut():
     deb = Tk()
@@ -245,10 +284,9 @@ def debut():
         deb.destroy()
         fen.destroy()
 
-
     TEXT = Label(deb, bg="black", font=("Arial", width//40), text="BIENVENUE DANS NOTRE JEUX VIDEO", fg="white")
-    START = Button(deb, text="JOUER", bg="blue", width=width//50, height=height //500, command=Jouer)
-    STOP = Button(deb, text="FERMER", bg="red", width=width//50, height=height //500, command=Stop)
+    START = Button(deb, text="JOUER", bg="blue", width=width//50, height=height // 500, command=Jouer)
+    STOP = Button(deb, text="FERMER", bg="red", width=width//50, height=height // 500, command=Stop)
     RESET_SAVE = Button(deb, text="RESET SAVE", bg="green", width=width//50, height=height // 500, command=Reset_Save)
 
     TEXT.place(x=width//2, y=height//5, anchor='s')
@@ -258,29 +296,65 @@ def debut():
 
     deb.mainloop()
 
+
+# écran de FIN : Victoire / Défaite
+
+#écran défaite
 def perdu():
+    sleep(0.05)
     fn = Tk()
-    fn.title=("PERDU")
+    fn.title("Perdu")
     fn.attributes("-fullscreen", True)
-    fn.config(bg= "black")
+    fn.config(bg="black")
+
+    def ferme_fn():
+        fn.destroy()
+
+    #Gestion affichage écran fin
     TXT = Label(fn, bg="black", font=("Arial", width//40), text="TA PERDU :(", fg="RED")
-    TXT_2 = Label(fn, bg="black", font=("Arial", width // 40), text="RAGE QUIT EN APPUYANT SUR ALT+F4 PR REJOUER", fg="RED")
-    TXT_3 = Label(fn, bg="black", font=("Arial", width // 40), text="TA SAUVEGARDE A ETE RESET", fg="RED")
+    TXT_2 = Label(fn, bg="black", font=("Arial", width // 40), text="tu as récolter "+str(Joueur.Get_total_gold())+" Gold durant cette partie !", fg="RED")
+    TXT_3 = Label(fn, bg="black", font=("Arial", width // 40), text="bien joué !", fg="RED")
+    Button_Fermer = Button(fn, text="X", width=5, height=1, command=ferme_fn)
+    #Placement widget
     TXT.place(x=width//2, y=height//5, anchor='s')
     TXT_2.place(x=width//2, y=height//5+height//15, anchor='s')
     TXT_3.place(x=width//2, y=height//5+height//7, anchor='s')
+    Button_Fermer.place(x=width-15, y=35, anchor='s')
+
     Reset_Save()
     ferme()
+
+
+#écran victoire
+def win():
+    sleep(0.05)
+    wn = Tk()
+    wn.title("Victoire")
+    wn.attributes("-fullscreen", True)
+    wn.config(bg="black")
+
+    def ferme_wn():
+        wn.destroy()
+
+    #Gestion affichage écran fin
+    TXT = Label(wn, bg="black", font=("Arial", width//40), text="BRAVO TA GAGNEZ !", fg="GREEN")
+    Button_Fermer = Button(wn, text="X", width=5, height=1, command=ferme_wn)
+    #Placement widget
+    TXT.place(x=width // 2, y=height // 5, anchor='s')
+    Button_Fermer.place(x=width - 15, y=35, anchor='s')
+
+
 # SAVE SYSTEM
 def Save():
     with open('save.txt', 'r+') as save:
         global Joueur
-        save.write(str(Joueur.Get_bonus_health())+'\n')
+        save.write(str(Joueur.Get_bonus_Health())+'\n')
         save.write(str(Joueur.Get_bonus_armor())+'\n')
         save.write(str(Joueur.Get_bonus_damage()) + '\n')
         save.write(str(Joueur.Get_pv()) + '\n')
         save.write(str(Joueur.Get_gold()) + '\n')
         save.close()
+
 
 def Load():
     with open('save.txt', 'r+') as save:
@@ -294,6 +368,7 @@ def Load():
         recalc_stats_label()
         deplacement(Joueur_Image_D, JEU)
 
+
 def Reset_Save():
     with open('save.txt', 'r+') as save:
         save.write('0'+'\n')
@@ -303,21 +378,6 @@ def Reset_Save():
         save.write('50'+'\n')
         save.close()
 
-
-
-def fin():
-    fin = Tk()
-    fin.title("FIN")
-    fin.attributes("-fullscreen", True)
-    fin.config(bg="black")
-
-    FIN = Canvas(fin, bg = "black", width = width, height = height)
-
-    FIN.pack()
-
-    ferme()
-
-    fin.mainloop()
 
 #IMAGES
 pixel_ref_button = PhotoImage(width=width//3, height=3*height//20, file="Textures/Buttons.png")
@@ -329,7 +389,7 @@ stats_label_img = ImageTk.PhotoImage(stats_label_img_resize)
 button_img = Image.open("Textures/Buttons.png")
 
 button_img_resize = button_img.resize((width//3, 3*height//20), resample=3)
-button_img_2_resize =button_img.resize((width//3-10, 3*height//20), resample=3)
+button_img_2_resize = button_img.resize((width//3-10, 3*height//20), resample=3)
 
 button_img = ImageTk.PhotoImage(button_img_resize)
 button_img_2 = ImageTk.PhotoImage(button_img_2_resize)
@@ -341,7 +401,7 @@ C_Img = Image.open("Textures/C.png")
 D_Img = Image.open("Textures/D.png")
 E_Img = Image.open("Textures/E.png")
 F_Img = Image.open("Textures/F.png")
-G_Img= Image.open("Textures/G.png")
+G_Img = Image.open("Textures/G.png")
 H_Img = Image.open("Textures/H.png")
 I_Img = Image.open("Textures/I.png")
 J_Img = Image.open("Textures/J.png")
@@ -491,7 +551,7 @@ COMBAT = Canvas(frame_millieu, width=width, height=(16*height//20), bg="Black")
 
 #CREATION DE LA PUB
 Fichier = []
-for i in range(1,9):
+for i in range(1, 9):
     Fichier.append(PhotoImage(file="Matts/matt" + str(i) + ".gif").subsample(13, 13))
 
 Matt = PUB.create_image(x_matt, 0, image=Fichier[indice], anchor='nw')
@@ -575,7 +635,7 @@ Mechant19 = Unite(20*(width//31), round(random.randint(6, 10))*(16*(height//20)/
 Boss = Unite(22*(width//31), 7*(16*(height//20)//17), 0, 100, 50, 50, 42, 42, 21)
 
 #CREATION IMAGES ENNEMIS
-Ennemis = [Mechant1,Mechant2,Mechant3,Mechant4,Mechant5,Mechant6,Mechant7,Mechant8,Mechant9,Mechant10,Mechant11,Mechant13,Mechant14,Mechant15,Mechant16,Mechant17,Mechant18,Mechant19]
+Ennemis = [Mechant1, Mechant2, Mechant3, Mechant4, Mechant5, Mechant6, Mechant7, Mechant8, Mechant9, Mechant10, Mechant11, Mechant13, Mechant14, Mechant15, Mechant16, Mechant17, Mechant18, Mechant19]
 
 Mechant1_image = JEU.create_image(Mechant1.x, Mechant1.y, image=Mechant_Tk, anchor='nw')
 Mechant2_image = JEU.create_image(Mechant2.x, Mechant2.y, image=Mechant_Tk, anchor='nw')
@@ -601,14 +661,14 @@ Boss_image = JEU.create_image(Boss.x, Boss.y, image=Boss_Tk, anchor='nw')
 #ASSIGNATION DES TOUCHES
 fen.focus_set()
 
-fen.bind("z", lambda event, tx="z" : deplacement(Joueur_Image_H, JEU))
-fen.bind("q", lambda event, tx="q" : deplacement(Joueur_Image_G, JEU))
-fen.bind("s", lambda event, tx="s" : deplacement(Joueur_Image_B, JEU))
-fen.bind("d", lambda event, tx="d" : deplacement(Joueur_Image_D, JEU))
-fen.bind("Z", lambda event, tx="Z" : deplacement(Joueur_Image_H, JEU))
-fen.bind("Q", lambda event, tx="Q" : deplacement(Joueur_Image_G, JEU))
-fen.bind("S", lambda event, tx="S" : deplacement(Joueur_Image_B, JEU))
-fen.bind("D", lambda event, tx="D" : deplacement(Joueur_Image_D, JEU))
+fen.bind("z", lambda event, tx="z": deplacement(Joueur_Image_H, JEU))
+fen.bind("q", lambda event, tx="q": deplacement(Joueur_Image_G, JEU))
+fen.bind("s", lambda event, tx="s": deplacement(Joueur_Image_B, JEU))
+fen.bind("d", lambda event, tx="d": deplacement(Joueur_Image_D, JEU))
+fen.bind("Z", lambda event, tx="Z": deplacement(Joueur_Image_H, JEU))
+fen.bind("Q", lambda event, tx="Q": deplacement(Joueur_Image_G, JEU))
+fen.bind("S", lambda event, tx="S": deplacement(Joueur_Image_B, JEU))
+fen.bind("D", lambda event, tx="D": deplacement(Joueur_Image_D, JEU))
 
 #PACKS FRAMES
 frame_haut.pack(side=TOP)

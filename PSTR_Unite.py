@@ -19,6 +19,7 @@
         self.shield = shield
         self.lv = 1
         self.gold = 0
+        self.total_gold = 0
         self.cost_m = cost_m
         self.cost_e = cost_e
         self.xp = 0
@@ -58,6 +59,9 @@
     def Get_gold(self):
         return(self.gold)
 
+    def Get_total_gold(self):
+        return(self.total_gold)
+
     def Get_cost_m(self):
         return(self.cost_m)
 
@@ -71,13 +75,13 @@
         return(self.typ)
 
     def Get_bonus_damage(self):
-        return(self.bonus_damage)
+        return(self.damage_bonus)
 
     def Get_bonus_Health(self):
-        return(self.bonus_health)
+        return(self.health_bonus)
 
     def Get_bonus_armor(self):
-        return(self.bonus_armor)
+        return(self.armor_bonus)
 
     def Get_bonus_damage_cost(self):
         return(100 + 10 * self.damage_bonus)
@@ -103,26 +107,32 @@
     def Get_true_shield(self):
         return(self.shield+(self.armor_bonus))
 
-    def Set_health_bonus(self,nb):
-        self.health_bonus = nb
-
-    def Set_damage_bonus(self,nb):
-        self.damage_bonus = nb
-
-    def Set_armor_bonus(self,nb):
-        self.armor_bonus = nb
-
-    def Set_health(self,nb):
-        self.pv = nb
-
-    def Set_gold(self,nb):
-        self.gold = nb
 
 
-    def deplacer(self,dx,dy,dz):
+    def Set_damage_bonus(self, value):
+        self.damage_bonus = value
+
+    def Set_health_bonus(self, value):
+        self.health_bonus = value
+
+    def Set_armor_bonus(self, value):
+        self.armor_bonus = value
+
+    def Set_health(self, value):
+        self.pv = value
+
+    def Set_coord(self, dx, dy):
+        self.x = dx
+        self.y = dy
+
+    def Set_gold(self, value):
+        self.gold = value
+        self.total_gold = value
+
+    def deplacer(self, dx, dy):
         self.x += dx
         self.y += dy
-        self.z += dz
+
 
     def afficher_statistiques(self):
 
@@ -158,6 +168,7 @@
         assert type(po_gagnees) == int and po_gagnees > 0
 
         self.gold += po_gagnees
+        self.total_gold += po_gagnees
 
     def subir_degats(self,degats):
 
