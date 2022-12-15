@@ -52,8 +52,18 @@ def check_boss_combat(coord):
     coord_boss_8 = [Boss.Get_x() + width // 31, Boss.Get_y() + 2 * (16 * (height // 20) // 17)]
     coord_boss_9 = [Boss.Get_x() + 2 * width // 31, Boss.Get_y() + 2 * (16 * (height // 20) // 17)]
     if coord == coord_boss or coord == coord_boss_2 or coord == coord_boss_3 or coord == coord_boss_4 or coord == coord_boss_5 or coord == coord_boss_6 or coord == coord_boss_7 or coord == coord_boss_8 or coord == coord_boss_9:
-        combat_screen(Boss)
-        if Joueur.Get_pv() != 0:
+        e = Boss
+        who_start = random.randint(1, 100)
+        if who_start > 100 // Joueur.Get_lv():
+            while Joueur.Get_pv() > 0 and e.Get_pv() > 0:
+                Joueur.subir_degats(e.Get_pc())
+                e.subir_degats(Joueur.Get_true_damage())
+
+        else:
+            while Joueur.Get_pv() > 0 and e.Get_pv() > 0:
+                e.subir_degats(Joueur.Get_true_damage())
+                Joueur.subir_degats(e.Get_pc())
+        if not Joueur.Get_pv() == 0:
             win()
 
 
@@ -73,9 +83,9 @@ def combat_screen(e):
     player_stats2.pack(side=TOP)
 
     def affichage_combat(pv_perdu, reward, pv_rendu):
-        pv_perdu_text = "Vous avez perdu " + str(pv_perdu) + " PV durant ce combat !"
+        pv_perdu_text = "Vous avez perdu " + str(pv_perdu-pv_rendu) + " PV durant ce combat !(soin compris)"
         reward_text = "Vous avez trouvé " + str(reward) + " Gold sur le monstre !"
-        health_text = "Vous avez récuperé " + str(pv_rendu) + " PV après ce combat !"
+        health_text = "Vous vous êtes soignez pour " + str(pv_rendu) + " PV après ce combat !"
         if Joueur.Get_pv() > 0:
             player_loot.config(text=reward_text)
             player_stats.config(text=pv_perdu_text)
@@ -140,13 +150,13 @@ def combat_screen(e):
 #Lancement des fonction de combat et d'affichage
     pv_start_player = Joueur.Get_pv()
     combat_calc()
-    affichage_combat(pv_start_player-Joueur.Get_pv(), e.Get_pv_mx() * 5 + e.Get_pc(), Joueur.Get_pv_mx()//10)
+    affichage_combat(pv_start_player-Joueur.Get_pv(), e.Get_pv_mx() * 5 + e.Get_pc(), Joueur.Get_true_max_health()//10)
     recalc_stats_label()
     if Joueur.Get_pv() == 0:
         fermer_cb()
         perdu()
-    Joueur.reparer(Joueur.Get_pv_mx()//10)
-    cb.after(3000,fermer_cb)
+    Joueur.reparer(Joueur.Get_true_max_health()//10)
+    cb.after(3000, fermer_cb)
     cb.mainloop()
 
 
@@ -332,6 +342,7 @@ def perdu():
 #écran victoire
 def win():
     sleep(0.05)
+    ferme()
     wn = Tk()
     wn.title("Victoire")
     wn.attributes("-fullscreen", True)
@@ -339,7 +350,6 @@ def win():
 
     def ferme_wn():
         wn.destroy()
-        fen.destroy()
 
     #Gestion affichage écran fin
     TXT = Label(wn, bg="black", font=("Arial", width//40), text="BRAVO TA GAGNEZ !", fg="GREEN")
@@ -348,7 +358,6 @@ def win():
     TXT.place(x=width // 2, y=height // 5, anchor='s')
     Button_Fermer.place(x=width - 15, y=35, anchor='s')
 
-    wn.after(4000,ferme_wn)
     wn.mainloop()
 
 # SAVE SYSTEM
