@@ -1,4 +1,3 @@
-
 from time import sleep
 from PSTR_Unite import*
 from tkinter import*
@@ -39,10 +38,7 @@ def combat(x, y):
         if coord == coord_ennemie:
             if e.Get_pv() > 0:
                 combat_screen(e)
-    recalc_stats_label()
     check_boss_combat(coord)
-    if Joueur.Get_pv() == 0:
-        perdu()
 
 
 def check_boss_combat(coord):
@@ -57,9 +53,7 @@ def check_boss_combat(coord):
     coord_boss_9 = [Boss.Get_x() + 2 * width // 31, Boss.Get_y() + 2 * (16 * (height // 20) // 17)]
     if coord == coord_boss or coord == coord_boss_2 or coord == coord_boss_3 or coord == coord_boss_4 or coord == coord_boss_5 or coord == coord_boss_6 or coord == coord_boss_7 or coord == coord_boss_8 or coord == coord_boss_9:
         combat_screen(Boss)
-        if Joueur.Get_pv() == 0:
-            perdu()
-        else:
+        if Joueur.Get_pv() != 0:
             win()
 
 
@@ -68,22 +62,24 @@ def combat_screen(e):
     cb = Tk()
     cb.title("Combat Log")
     cb.config(bg="black")
-    cb.config(width=500, height=50)
+    cb.config(width=500, height=70)
 
     player_stats = Label(cb, bg="black", fg='green', font=("Arial", 10), text="N/A")
     player_loot = Label(cb, bg="black", fg='green', font=("Arial", 10), text="N/A")
+    player_stats2 = Label(cb, bg="black", fg='green', font=("Arial", 10), text="N/A")
 
-    player_stats.place(x=120, y=20, anchor='s')
-    player_loot.place(x=120, y=40, anchor='s')
+    player_stats.pack(side=TOP)
+    player_loot.pack(side=TOP)
+    player_stats2.pack(side=TOP)
 
-    def affichage_combat(pv_perdu, reward):
+    def affichage_combat(pv_perdu, reward, pv_rendu):
         pv_perdu_text = "Vous avez perdu " + str(pv_perdu) + " PV durant ce combat !"
-        reward_text = "Vous avez trouvez " + str(reward) + " Gold sur le monstre !"
+        reward_text = "Vous avez trouvé " + str(reward) + " Gold sur le monstre !"
+        health_text = "Vous avez récuperé " + str(pv_rendu) + " PV après ce combat !"
         if Joueur.Get_pv() > 0:
             player_loot.config(text=reward_text)
             player_stats.config(text=pv_perdu_text)
-        else:
-            cb.destroy()
+            player_stats2.config(text=health_text)
 
     def combat_calc():
         who_start = random.randint(1, 100)
@@ -137,15 +133,21 @@ def combat_screen(e):
             elif e.typ == 20:
                 JEU.coords(Mechant19_image, -100, -100)
         # Reward
-        Joueur.augmenter_po(e.Get_pv_mx() * 3 + e.Get_pc())
+        Joueur.augmenter_po(e.Get_pv_mx() * 5 + e.Get_pc())
+    def fermer_cb():
+        cb.destroy()
 
 #Lancement des fonction de combat et d'affichage
     pv_start_player = Joueur.Get_pv()
     combat_calc()
-    affichage_combat(pv_start_player-Joueur.Get_pv(), e.Get_pv_mx() * 3 + e.Get_pc())
+    affichage_combat(pv_start_player-Joueur.Get_pv(), e.Get_pv_mx() * 5 + e.Get_pc(), Joueur.Get_pv_mx()//10)
     recalc_stats_label()
+    if Joueur.Get_pv() == 0:
+        fermer_cb()
+        perdu()
+    Joueur.reparer(Joueur.Get_pv_mx()//10)
+    cb.after(3000,fermer_cb)
     cb.mainloop()
-    cb.destroy()
 
 
 def recalc_stats_label():
@@ -309,6 +311,7 @@ def perdu():
 
     def ferme_fn():
         fn.destroy()
+        fen.destroy()
 
     #Gestion affichage écran fin
     TXT = Label(fn, bg="black", font=("Arial", width//40), text="TA PERDU :(", fg="RED")
@@ -319,10 +322,11 @@ def perdu():
     TXT.place(x=width//2, y=height//5, anchor='s')
     TXT_2.place(x=width//2, y=height//5+height//15, anchor='s')
     TXT_3.place(x=width//2, y=height//5+height//7, anchor='s')
-    Button_Fermer.place(x=width-15, y=35, anchor='s')
+    Button_Fermer.place(x=width, y=0, anchor='ne')
 
     Reset_Save()
-    ferme()
+    fn.after(4000,ferme_fn)
+    fn.mainloop()
 
 
 #écran victoire
@@ -335,6 +339,7 @@ def win():
 
     def ferme_wn():
         wn.destroy()
+        fen.destroy()
 
     #Gestion affichage écran fin
     TXT = Label(wn, bg="black", font=("Arial", width//40), text="BRAVO TA GAGNEZ !", fg="GREEN")
@@ -343,6 +348,8 @@ def win():
     TXT.place(x=width // 2, y=height // 5, anchor='s')
     Button_Fermer.place(x=width - 15, y=35, anchor='s')
 
+    wn.after(4000,ferme_wn)
+    wn.mainloop()
 
 # SAVE SYSTEM
 def Save():
@@ -377,7 +384,6 @@ def Reset_Save():
         save.write('100'+'\n')
         save.write('50'+'\n')
         save.close()
-
 
 #IMAGES
 pixel_ref_button = PhotoImage(width=width//3, height=3*height//20, file="Textures/Buttons.png")
