@@ -53,19 +53,13 @@ def check_boss_combat(coord):
     coord_boss_9 = [Boss.Get_x() + 2 * width // 31, Boss.Get_y() + 2 * (16 * (height // 20) // 17)]
     if coord == coord_boss or coord == coord_boss_2 or coord == coord_boss_3 or coord == coord_boss_4 or coord == coord_boss_5 or coord == coord_boss_6 or coord == coord_boss_7 or coord == coord_boss_8 or coord == coord_boss_9:
         e = Boss
-        who_start = random.randint(1, 100)
-        if who_start > 100 // Joueur.Get_lv():
-            while Joueur.Get_pv() > 0 and e.Get_pv() > 0:
-                Joueur.subir_degats(e.Get_pc())
-                e.subir_degats(Joueur.Get_true_damage())
-
-        else:
-            while Joueur.Get_pv() > 0 and e.Get_pv() > 0:
-                e.subir_degats(Joueur.Get_true_damage())
-                Joueur.subir_degats(e.Get_pc())
+        while Joueur.Get_pv() > 0 and e.Get_pv() > 0:
+            e.subir_degats(Joueur.Get_true_damage())
+            Joueur.subir_degats(e.Get_pc())
         if not Joueur.Get_pv() == 0:
             win()
-
+        else:
+            perdu()
 
 def combat_screen(e):
     #creation fenetre
@@ -647,7 +641,7 @@ Mechant16 = Unite(14*(width//31), round(random.randint(6, 10))*(16*(height//20)/
 Mechant17 = Unite(16*(width//31), round(random.randint(6, 10))*(16*(height//20)//17), 0, 35, 40, 50, 42, 42, 18)
 Mechant18 = Unite(18*(width//31), round(random.randint(6, 10))*(16*(height//20)//17), 0, 35, 40, 50, 42, 42, 19)
 Mechant19 = Unite(20*(width//31), round(random.randint(6, 10))*(16*(height//20)//17), 0, 40, 50, 50, 42, 42, 20)
-Boss = Unite(22*(width//31), 7*(16*(height//20)//17), 0, 100, 50, 50, 42, 42, 21)
+Boss = Unite(22*(width//31), 7*(16*(height//20)//17), 0, 95, 50, 50, 42, 42, 21)
 
 #CREATION IMAGES ENNEMIS
 Ennemis = [Mechant1, Mechant2, Mechant3, Mechant4, Mechant5, Mechant6, Mechant7, Mechant8, Mechant9, Mechant10, Mechant11, Mechant13, Mechant14, Mechant15, Mechant16, Mechant17, Mechant18, Mechant19]
