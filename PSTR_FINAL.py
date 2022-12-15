@@ -53,13 +53,22 @@ def check_boss_combat(coord):
     coord_boss_9 = [Boss.Get_x() + 2 * width // 31, Boss.Get_y() + 2 * (16 * (height // 20) // 17)]
     if coord == coord_boss or coord == coord_boss_2 or coord == coord_boss_3 or coord == coord_boss_4 or coord == coord_boss_5 or coord == coord_boss_6 or coord == coord_boss_7 or coord == coord_boss_8 or coord == coord_boss_9:
         e = Boss
-        while Joueur.Get_pv() > 0 and e.Get_pv() > 0:
-            e.subir_degats(Joueur.Get_true_damage())
-            Joueur.subir_degats(e.Get_pc())
+        print("a")
+        who_start = random.randint(1, 100)
+        if who_start > 100 // Joueur.Get_lv():
+            while Joueur.Get_pv() > 0 and e.Get_pv() > 0:
+                Joueur.subir_degats(e.Get_pc())
+                e.subir_degats(Joueur.Get_true_damage())
+
+        else:
+            while Joueur.Get_pv() > 0 and e.Get_pv() > 0:
+                e.subir_degats(Joueur.Get_true_damage())
+                Joueur.subir_degats(e.Get_pc())
         if not Joueur.Get_pv() == 0:
             win()
         else:
             perdu()
+
 
 def combat_screen(e):
     #creation fenetre
@@ -77,7 +86,7 @@ def combat_screen(e):
     player_stats2.pack(side=TOP)
 
     def affichage_combat(pv_perdu, reward, pv_rendu):
-        pv_perdu_text = "Vous avez perdu " + str(pv_perdu-pv_rendu) + " PV durant ce combat !(soin compris)"
+        pv_perdu_text = "Vous avez perdu " + str(pv_perdu) + " PV durant ce combat !"
         reward_text = "Vous avez trouvé " + str(reward) + " Gold sur le monstre !"
         health_text = "Vous vous êtes soignez pour " + str(pv_rendu) + " PV après ce combat !"
         if Joueur.Get_pv() > 0:
@@ -137,14 +146,14 @@ def combat_screen(e):
             elif e.typ == 20:
                 JEU.coords(Mechant19_image, -100, -100)
         # Reward
-        Joueur.augmenter_po(e.Get_pv_mx() * 5 + e.Get_pc())
+        Joueur.augmenter_po(e.Get_pv_mx() * 3 + e.Get_pc())
     def fermer_cb():
         cb.destroy()
 
 #Lancement des fonction de combat et d'affichage
     pv_start_player = Joueur.Get_pv()
     combat_calc()
-    affichage_combat(pv_start_player-Joueur.Get_pv(), e.Get_pv_mx() * 5 + e.Get_pc(), Joueur.Get_true_max_health()//10)
+    affichage_combat(pv_start_player-Joueur.Get_pv(), e.Get_pv_mx() * 3 + e.Get_pc(), Joueur.Get_true_max_health()//25)
     recalc_stats_label()
     if Joueur.Get_pv() == 0:
         fermer_cb()
@@ -350,8 +359,9 @@ def win():
     Button_Fermer = Button(wn, text="X", width=5, height=1, command=ferme_wn)
     #Placement widget
     TXT.place(x=width // 2, y=height // 5, anchor='s')
-    Button_Fermer.place(x=width - 15, y=35, anchor='s')
+    Button_Fermer.place(x=width , y=0, anchor='ne')
 
+    wn.after(4000,ferme_wn)
     wn.mainloop()
 
 # SAVE SYSTEM
@@ -623,25 +633,25 @@ Joueur_Image_B = JEU.create_image((-100, -100), image=Joueur_Tk_B, anchor='nw')
 Joueur_Image_H = JEU.create_image((-100, -100), image=Joueur_Tk_H, anchor='nw')
 
 #CREATION ENNEMIS
-Mechant1 = Unite(round(random.randint(1, 30))*(width//31), round(random.randint(15, 16))*(16*(height//20)//17), 0, 1, 5, 0, 42, 42, 2)
-Mechant2 = Unite(round(random.randint(29, 30))*(width//31), round(random.randint(0, 14))*(16*(height//20)//17), 0, 20, 25, 50, 42, 42, 3)
-Mechant3 = Unite(round(random.randint(0, 28))*(width//31), round(random.randint(0, 1))*(16*(height//20)//17), 0, 20, 25, 50, 42, 42, 4)
-Mechant4 = Unite(round(random.randint(0, 28))*(width//31), round(random.randint(0, 1))*(16*(height//20)//17), 0, 20, 25, 50, 42, 42, 5)
-Mechant5 = Unite(round(random.randint(0, 1))*(width//31), round(random.randint(2, 13))*(16*(height//20)//17), 0, 20, 25, 50, 42, 42, 6)
-Mechant6 = Unite(round(random.randint(2, 26))*(width//31), round(random.randint(12, 13))*(16*(height//20)//17), 0, 25, 30, 50, 42, 42, 7)
-Mechant7 = Unite(round(random.randint(2, 26))*(width//31), round(random.randint(12, 13))*(16*(height//20)//17), 0, 25, 30, 50, 42, 42, 8)
-Mechant8 = Unite(round(random.randint(26, 27))*(width//31), round(random.randint(3, 11))*(16*(height//20)//17), 0, 25, 30, 50, 42, 42, 9)
-Mechant9 = Unite(round(random.randint(3, 24))*(width//31), round(random.randint(3, 4))*(16*(height//20)//17), 0, 30, 35, 50, 42, 42, 10)
-Mechant10 = Unite(round(random.randint(3, 24))*(width//31), round(random.randint(3, 4))*(16*(height//20)//17), 0, 30, 35, 50, 42, 42, 11)
-Mechant11 = Unite(round(random.randint(3, 4))*(width//31), round(random.randint(5, 10))*(16*(height//20)//17), 0, 30, 35, 50, 42, 42, 12)
-Mechant13 = Unite(8*(width//31), round(random.randint(6, 10))*(16*(height//20)//17), 0, 30, 35, 50, 42, 42, 14)
-Mechant14 = Unite(10*(width//31), round(random.randint(6, 10))*(16*(height//20)//17), 0, 35, 35, 50, 42, 42, 15)
-Mechant15 = Unite(12*(width//31), round(random.randint(6, 10))*(16*(height//20)//17), 0, 35, 40, 50, 42, 42, 16)
-Mechant16 = Unite(14*(width//31), round(random.randint(6, 10))*(16*(height//20)//17), 0, 35, 40, 50, 42, 42, 17)
-Mechant17 = Unite(16*(width//31), round(random.randint(6, 10))*(16*(height//20)//17), 0, 35, 40, 50, 42, 42, 18)
-Mechant18 = Unite(18*(width//31), round(random.randint(6, 10))*(16*(height//20)//17), 0, 35, 40, 50, 42, 42, 19)
-Mechant19 = Unite(20*(width//31), round(random.randint(6, 10))*(16*(height//20)//17), 0, 40, 50, 50, 42, 42, 20)
-Boss = Unite(22*(width//31), 7*(16*(height//20)//17), 0, 95, 50, 50, 42, 42, 21)
+Mechant1 = Unite(round(random.randint(1, 30))*(width//31), round(random.randint(15, 16))*(16*(height//20)//17), 0, 50, 1, 50, 42, 42, 2)
+Mechant2 = Unite(round(random.randint(29, 30))*(width//31), round(random.randint(0, 14))*(16*(height//20)//17), 0, 50, 2, 50, 42, 42, 3)
+Mechant3 = Unite(round(random.randint(0, 28))*(width//31), round(random.randint(0, 1))*(16*(height//20)//17), 0, 50, 3, 50, 42, 42, 4)
+Mechant4 = Unite(round(random.randint(0, 28))*(width//31), round(random.randint(0, 1))*(16*(height//20)//17), 0, 50, 4, 50, 42, 42, 5)
+Mechant5 = Unite(round(random.randint(0, 1))*(width//31), round(random.randint(2, 13))*(16*(height//20)//17), 0, 50, 5, 50, 42, 42, 6)
+Mechant6 = Unite(round(random.randint(2, 26))*(width//31), round(random.randint(12, 13))*(16*(height//20)//17), 0, 75, 6, 50, 42, 42, 7)
+Mechant7 = Unite(round(random.randint(2, 26))*(width//31), round(random.randint(12, 13))*(16*(height//20)//17), 0, 75, 7, 50, 42, 42, 8)
+Mechant8 = Unite(round(random.randint(26, 27))*(width//31), round(random.randint(3, 11))*(16*(height//20)//17), 0, 75, 8, 50, 42, 42, 9)
+Mechant9 = Unite(round(random.randint(3, 24))*(width//31), round(random.randint(3, 4))*(16*(height//20)//17), 0, 75, 9, 50, 42, 42, 10)
+Mechant10 = Unite(round(random.randint(3, 24))*(width//31), round(random.randint(3, 4))*(16*(height//20)//17), 0, 75, 10, 50, 42, 42, 11)
+Mechant11 = Unite(round(random.randint(3, 4))*(width//31), round(random.randint(5, 10))*(16*(height//20)//17), 0, 100, 11, 50, 42, 42, 12)
+Mechant13 = Unite(8*(width//31), round(random.randint(6, 10))*(16*(height//20)//17), 0, 100, 12, 50, 42, 42, 14)
+Mechant14 = Unite(10*(width//31), round(random.randint(6, 10))*(16*(height//20)//17), 0, 100, 13, 50, 42, 42, 15)
+Mechant15 = Unite(12*(width//31), round(random.randint(6, 10))*(16*(height//20)//17), 0, 100, 14, 50, 42, 42, 16)
+Mechant16 = Unite(14*(width//31), round(random.randint(6, 10))*(16*(height//20)//17), 0, 125, 15, 50, 42, 42, 17)
+Mechant17 = Unite(16*(width//31), round(random.randint(6, 10))*(16*(height//20)//17), 0, 125, 16, 50, 42, 42, 18)
+Mechant18 = Unite(18*(width//31), round(random.randint(6, 10))*(16*(height//20)//17), 0, 125, 17, 50, 42, 42, 19)
+Mechant19 = Unite(20*(width//31), round(random.randint(6, 10))*(16*(height//20)//17), 0, 125, 18, 50, 42, 42, 20)
+Boss = Unite(22*(width//31), 7*(16*(height//20)//17), 0, 150, 25, 50, 42, 42, 21)
 
 #CREATION IMAGES ENNEMIS
 Ennemis = [Mechant1, Mechant2, Mechant3, Mechant4, Mechant5, Mechant6, Mechant7, Mechant8, Mechant9, Mechant10, Mechant11, Mechant13, Mechant14, Mechant15, Mechant16, Mechant17, Mechant18, Mechant19]
